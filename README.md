@@ -21,16 +21,16 @@
 
 ### Meetings with the client ###
 
-  ### Wednesdays at 14:30 on these dates ###
-  * 27 May
-  * 10 June
-  * 24 June
-  * 8 July
-  * 22 July
-  * 5 August
-  * 19 August
-  * 2 September
-  * 16 September
-  * 30 September
+### Wednesdays at 14:30 on these dates ###
+* 27 May
+* 10 June
+* 24 June
+* 8 July
+* 22 July
+* 5 August
+* 19 August
+* 2 September
+* 16 September
+* 30 September
 
 
