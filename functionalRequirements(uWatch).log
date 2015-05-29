@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (MiKTeX 2.9) (preloaded format=xelatex 2015.5.27)  29 MAY 2015 10:55
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (MiKTeX 2.9) (preloaded format=xelatex 2015.5.27)  29 MAY 2015 12:35
 entering extended mode
 **functionalRequirements(uWatch).tex
 (C:\Users\User\Documents\GitHub\MPHETamines\functionalRequirements(uWatch).tex
@@ -230,6 +230,15 @@ LaTeX Warning: Label `overflow' multiply defined.
 
 LaTeX Warning: Label `overflow' multiply defined.
 
+
+LaTeX Warning: Label `overflow' multiply defined.
+
+
+LaTeX Warning: Label `overflow' multiply defined.
+
+
+LaTeX Warning: Label `overflow' multiply defined.
+
 )
 LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 6.
 LaTeX Font Info:    ... okay on input line 6.
@@ -336,91 +345,112 @@ File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
 (Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 131.
+File: images/downloadserviceContract.jpg Graphic file (type QTm)
 
-Underfull \hbox (badness 10000) in paragraph at lines 138--143
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 144--147
+<use  "images/downloadserviceContract.jpg" >
+Underfull \hbox (badness 10000) in paragraph at lines 138--148
 
  []
 
 [8]
-Underfull \hbox (badness 10000) in paragraph at lines 148--151
+Underfull \hbox (badness 10000) in paragraph at lines 149--151
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 152--155
+Underfull \hbox (badness 10000) in paragraph at lines 152--158
 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--159
+Underfull \hbox (badness 10000) in paragraph at lines 159--169
+
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 170--175
 
  []
 
 
-Overfull \hbox (5.40146pt too wide) in paragraph at lines 162--163
+Overfull \hbox (5.40146pt too wide) in paragraph at lines 178--179
 \OT1/cmr/m/n/12 The sys-tem will au-then-ti-cate against the South African Home
  Af-fairs Database
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 162--163
+Underfull \hbox (badness 10000) in paragraph at lines 178--179
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 164--169
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 170--173
+File: images/SAPSserviceContract.jpg Graphic file (type QTm)
+<use  "images/SAPSserviceContract.jpg" >
+Underfull \hbox (badness 10000) in paragraph at lines 180--190
 
  []
 
-
-Underfull \hbox (badness 10000) in paragraph at lines 176--179
-
- []
-
-[9]
-Underfull \hbox (badness 10000) in paragraph at lines 180--183
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 185--188
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 189--192
-
- []
-
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 193.
 [10]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 193.
+Underfull \hbox (badness 10000) in paragraph at lines 191--193
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 194--200
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 194--200
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 203--206
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 207--212
+
+ []
+
+[11]
+File: images/UploadserviceContract.jpg Graphic file (type QTm)
+ <use  "images/UploadserviceContract.jpg" >
+Underfull \hbox (badness 10000) in paragraph at lines 214--222
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 223--225
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 226--232
+
+ []
+
+[12]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 233.
+ [13]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 233.
 
 (C:\Users\User\Documents\GitHub\MPHETamines\functionalRequirements(uWatch).aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 193.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 193.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 233.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 233.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 193.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 233.
  ) 
 Here is how much of TeX's memory you used:
- 9145 strings out of 429025
- 131039 string characters out of 3166798
+ 9151 strings out of 429025
+ 131210 string characters out of 3166798
  199390 words of memory out of 3000000
- 12388 multiletter control sequences out of 15000+200000
+ 12391 multiletter control sequences out of 15000+200000
  11212 words of font info for 39 fonts, out of 3000000 for 9000
  912 hyphenation exceptions out of 8191
- 36i,6n,45p,731b,324s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 36i,6n,45p,731b,345s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on functionalRequirements(uWatch).pdf (12 pages).
+Output written on functionalRequirements(uWatch).pdf (15 pages).
