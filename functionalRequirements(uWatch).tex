@@ -124,6 +124,70 @@ User requirement information can be in text or process flow format for each majo
 \end{figure}
 
 \subsection{Functional Requirements}
-[List the functional requirements of the system.]
+
+\subsubsection {The Administration Module}
+The functionality provided by the Administration module includes the following:
+\begin{itemize}
+\item It manages access to the systems desktop version of the model
+\item It provides means to download the potential evidence
+\item It provides functionality to validate the evidence, whether by location, date or digital footprint
+\item It provides encryption and decrypt functionality
+\end{itemize}
+
+
+3.6.1.1 Use Cases\newline
+The Administration module provides services to download, validate, encrypt, decrypt and manage access to the system\newline
+DownloadPDE-Priority:high\newline
+	3.6.1.1 Service Contract\newline
+	3.6.1.2 Functional Requirement\newline
+	
+3.6.1.2 ValidatePDE-Priority:high\newline
+	3.6.1.2.1 Service Contract\newline
+	3.6.1.2.2 Functional Requirement\newline
+	
+3.6.1.3 EncryptPDE-Priority:high\newline
+	3.6.1.3.1 Service Contract\newline
+	3.6.1.3.2 Functional Requirement\newline
+	
+3.6.1.4 DecryptPDE-Priority:high\newline
+	3.6.1.4.1 Service Contract\newline
+	3.6.1.4.2 Functional Requirement\newline
+	
+3.6.1.5 ManageAccessAllocatio-Priority:high\newline
+	3.6.1.5.1 Service Contract\newline
+	3.6.1.5.2 Functional Requirement\newline
+
+\subsubsection {Login and Administrative user}
+
+The system will authenticate against the South African Home Affairs Database for community members who are to upload potential digital evidence.\newline
+
+3.6.1.2 Use Cases\newline
+The Login module provides services to login, view the potential digital evidence to be uploaded to the ONW system.\newline
+3.6.1.2.1 Login-Priority:high\newline
+	3.6.1.2.1.1 Service Contract\newline
+	3.6.1.2.1.2 Functional Requirement\newline
+	
+3.6.1.2.2 View-Priority:high\newline
+	3.6.1.2.2.1 Service Contract\newline
+	3.6.1.2.2.2 Functional Requirement\newline
+	
+\subsubsection {ONW Application Module}
+
+The  Application module enables a user to upload potential evidence to the system \newline
+3.6.1.3 Use Cases\newline
+The Application module will provide services to capture PDE, confirm upload and send back a confirmation status of the upload to the uploader.\newline
+
+3.6.1.3.1 CapturePDE-Priority:high\newline
+	3.6.1.3.1.1 Service Contract\newline
+	3.6.1.3.1.2 Functional Requirement\newline
+
+
+3.6.1.3.2 UploadPDE-Priority:high\newline
+	3.6.1.3.2.1 Service Contract\newline
+	3.6.1.3.2.2 Functional Requirement\newline
+	
+3.6.1.3.3 ConfirmPDE-Priority:high\newline
+	3.6.1.3.3.1 Service Contract\newline
+	3.6.1.3.3.2 Functional Requirement\newline
 
 \end{document}

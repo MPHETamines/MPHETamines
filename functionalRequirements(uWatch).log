@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (MiKTeX 2.9) (preloaded format=xelatex 2015.5.27)  29 MAY 2015 10:24
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (MiKTeX 2.9) (preloaded format=xelatex 2015.5.27)  29 MAY 2015 10:55
 entering extended mode
 **functionalRequirements(uWatch).tex
 (C:\Users\User\Documents\GitHub\MPHETamines\functionalRequirements(uWatch).tex
@@ -328,25 +328,99 @@ File: images/DownloadPDE.jpg Graphic file (type QTm)
 <use  "images/DownloadPDE.jpg" >
 File: images/ViewPDE.jpg Graphic file (type QTm)
  <use  "images/ViewPDE.jpg" > [7]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 129.
- [8]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 129.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 131.
+
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\base\omscmr.fd"
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 131.
+
+Underfull \hbox (badness 10000) in paragraph at lines 138--143
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 144--147
+
+ []
+
+[8]
+Underfull \hbox (badness 10000) in paragraph at lines 148--151
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 152--155
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 156--159
+
+ []
+
+
+Overfull \hbox (5.40146pt too wide) in paragraph at lines 162--163
+\OT1/cmr/m/n/12 The sys-tem will au-then-ti-cate against the South African Home
+ Af-fairs Database
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 162--163
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 164--169
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 170--173
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 176--179
+
+ []
+
+[9]
+Underfull \hbox (badness 10000) in paragraph at lines 180--183
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 185--188
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 189--192
+
+ []
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 193.
+[10]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 193.
 
 (C:\Users\User\Documents\GitHub\MPHETamines\functionalRequirements(uWatch).aux)
-Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 129.
-Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 129.
+Package atveryend Info: Empty hook `AtVeryEndDocument' on input line 193.
+Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 193.
 
 LaTeX Warning: There were multiply-defined labels.
 
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 129.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 193.
  ) 
 Here is how much of TeX's memory you used:
- 9127 strings out of 429025
- 130772 string characters out of 3166798
+ 9145 strings out of 429025
+ 131039 string characters out of 3166798
  199390 words of memory out of 3000000
- 12373 multiletter control sequences out of 15000+200000
+ 12388 multiletter control sequences out of 15000+200000
  11212 words of font info for 39 fonts, out of 3000000 for 9000
  912 hyphenation exceptions out of 8191
  36i,6n,45p,731b,324s stack positions out of 5000i,500n,10000p,200000b,50000s
 
-Output written on functionalRequirements(uWatch).pdf (10 pages).
+Output written on functionalRequirements(uWatch).pdf (12 pages).
