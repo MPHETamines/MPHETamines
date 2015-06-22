@@ -32,7 +32,7 @@
 * 16 September
 * 30 September
 
-### Task allocated on 22 June 2015 ###
+### Tasks allocated on 22 June 2015 ###
 * App design - Taariq & Harry & Martha
 * Database - Sboniso & Phetile
 
