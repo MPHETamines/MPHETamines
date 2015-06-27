@@ -18,6 +18,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".registered"
+            android:label="@string/title_activity_registered" >
+        </activity>
+        <activity
+            android:name=".loginsucess"
+            android:label="@string/title_activity_loginsucess" >
+        </activity>
+        <activity
+            android:name=".passwordreset"
+            android:label="@string/title_activity_passwordreset" >
+        </activity>
+        <activity
+            android:name=".changepassword"
+            android:label="@string/title_activity_changepassword" >
+        </activity>
     </application>
 
 </manifest>
