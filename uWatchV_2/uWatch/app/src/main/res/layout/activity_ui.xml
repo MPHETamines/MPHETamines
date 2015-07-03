@@ -1,0 +1,100 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".UIActivity">
+
+
+
+
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uWatchLogo"
+        android:src="@drawable/uwatchlogo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Choose a media type to capture"
+        android:id="@+id/textView"
+        android:layout_below="@+id/uWatchLogo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uWatchPhoto"
+        android:src="@drawable/uwatchphoto"
+        android:layout_below="@+id/textView"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uWatchVideo"
+        android:src="@drawable/uwatchvideo"
+        android:layout_below="@+id/uWatchPhoto"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp" />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/uWatchAudio"
+        android:src="@drawable/uwatchaudio"
+        android:layout_below="@+id/uWatchVideo"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp" />
+
+
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="take photo"
+        android:id="@+id/photoButton"
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/voiceButton"
+        android:layout_alignStart="@+id/voiceButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="record video"
+        android:id="@+id/videoButton"
+        android:layout_alignTop="@+id/uWatchVideo"
+        android:layout_alignLeft="@+id/photoButton"
+        android:layout_alignStart="@+id/photoButton"
+        android:layout_marginBottom="10dp"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="record audio"
+        android:id="@+id/voiceButton"
+        android:layout_alignTop="@+id/uWatchAudio"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/imageView"
+        android:layout_toRightOf="@+id/photoButton"
+        android:layout_toEndOf="@+id/photoButton"
+        android:layout_below="@+id/voiceButton"
+        android:focusableInTouchMode="true" />
+
+
+</RelativeLayout>
