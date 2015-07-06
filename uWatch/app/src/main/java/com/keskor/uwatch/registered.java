@@ -1,9 +1,12 @@
 package com.keskor.uwatch;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 
 public class registered extends ActionBarActivity {
@@ -12,6 +15,20 @@ public class registered extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registered);
+
+        Button loginScreen = (Button) findViewById(R.id.bktologin);
+
+        // Listening to Login Screen link
+        loginScreen.setOnClickListener(new View.OnClickListener() {
+
+            public void onClick(View arg0) {
+                // Closing registration screen
+                // Switching to Login Screen/closing register screen
+                Intent i = new Intent(getApplicationContext(), com.keskor.uwatch.MainActivity.class);
+                startActivity(i);
+                finish();
+            }
+        });
     }
 
     @Override

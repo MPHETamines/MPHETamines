@@ -1,7 +1,8 @@
-package com.example.keskor.uwatch;
+package com.keskor.uwatch;
 
 
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,27 +26,27 @@ public class Register extends ActionBarActivity {
     EditText editTextEmail;
     EditText editTextUserName;
     EditText editTextPassword;
-    LoginDataBaseAdapter loginDataBaseAdapter;
+    //LoginDataBaseAdapter loginDataBaseAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.signup);
 
 
-        loginDataBaseAdapter = new LoginDataBaseAdapter(this);
-        loginDataBaseAdapter = loginDataBaseAdapter.open();
+        //loginDataBaseAdapter = new LoginDataBaseAdapter(this);
+        //loginDataBaseAdapter = loginDataBaseAdapter.open();
 
 
         editTextFirstName =(EditText)findViewById(R.id.fname);
         editTextLastName =(EditText)findViewById(R.id.lname);
-        editTextEmail = (EditText)findViewById(R.id.editTextPassword);
-        editTextUserName=(EditText)findViewById(R.id.editTextPassword);
-        editTextPassword=(EditText)findViewById(R.id.editTextConfirmPassword);
+        editTextEmail = (EditText)findViewById(R.id.email);
+        editTextUserName=(EditText)findViewById(R.id.uname);
+        editTextPassword=(EditText)findViewById(R.id.pword);
 
         Button btnCreateAccount=(Button)findViewById(R.id.register);
+
+        // create a new user account
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
@@ -64,8 +65,10 @@ public class Register extends ActionBarActivity {
                 }
                 else {
 
-                    loginDataBaseAdapter.insertEntry(uname, pass);
-                    Toast.makeText(getApplicationContext(), "Registered Successfully", Toast.LENGTH_LONG).show();
+                    //insert into the database and go to successfully registered screen
+                    //loginDataBaseAdapter.insertEntry(fname,email,uname, pass);
+                    Intent i = new Intent(getApplicationContext(), com.keskor.uwatch.registered.class);
+                    startActivity(i);
                 }
             }
         });
@@ -78,6 +81,8 @@ public class Register extends ActionBarActivity {
             public void onClick(View arg0) {
                 // Closing registration screen
                 // Switching to Login Screen/closing register screen
+                Intent i = new Intent(getApplicationContext(), com.keskor.uwatch.MainActivity.class);
+                startActivity(i);
                 finish();
             }
         });
@@ -86,7 +91,7 @@ public class Register extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_register, menu);
+        //getMenuInflater().inflate(R.menu.menu_register, menu);
         return true;
     }
 
