@@ -84,6 +84,7 @@ public class UIActivity extends Activity implements View.OnClickListener {
     @Override
     public void onClick(View v)
     {
+
         //Perform action based on which button is Clicked
         switch (v.getId())
         {
