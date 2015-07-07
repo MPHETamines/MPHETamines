@@ -1,4 +1,4 @@
-package com.example.keskor.uwatch;
+package com.keskor.uwatch;
 
 
 import android.content.Intent;
@@ -16,19 +16,51 @@ import android.widget.Toast;
 
 public class MainActivity extends ActionBarActivity {
     int numberOfLoginAttempts = 3;
+    EditText username = (EditText)findViewById(R.id.email);
+    EditText password = (EditText)findViewById(R.id.pword);
+    Button login = (Button)findViewById(R.id.login);
+    TextView loginLockedTV = (TextView)findViewById(R.id.loginLockedTV);
+    TextView attemptsLeftTV = (TextView)findViewById(R.id.attemptsLeftTV);
+    TextView numberOfRemainingLoginAttemptsTV = (TextView) findViewById(R.id.numberOfRemainingLoginAttemptsTV);
+    Button registerButton = (Button) findViewById(R.id.registerbtn);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        login(setContentView(R.layout.activity_main));
-        Button registerButton = (Button) findViewById(R.id.registerbtn);
-        // Listening to register new account link
+
+
+        // Login process
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    if (username.getText().toString().equals("admin") &&
+                            password.getText().toString().equals("admin")) {
+                        Toast.makeText(getApplicationContext(), "Hello admin!",
+                                Toast.LENGTH_SHORT).show();
+                        Intent i = new Intent(getApplicationContext(), com.keskor.uwatch.loginsucess.class);
+                        startActivity(i);
+                    } else {
+                        Toast.makeText(getApplicationContext(), "Incorrect login!",
+                                Toast.LENGTH_SHORT).show();
+                        numberOfLoginAttempts--;
+                        attemptsLeftTV.setVisibility(View.VISIBLE);
+                        numberOfRemainingLoginAttemptsTV.setVisibility(View.VISIBLE);
+                        numberOfRemainingLoginAttemptsTV.setText(Integer.toString(numberOfLoginAttempts));
+                        if (numberOfLoginAttempts == 0) {
+                            login.setEnabled(false);
+                            loginLockedTV.setVisibility(View.VISIBLE);
+                            loginLockedTV.setBackgroundColor(Color.RED);
+                            loginLockedTV.setText("LOGIN LOCKED!!!");
+                        }
+                    }
+                }
+        });
         registerButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
                 // Switching to Register screen
-                Intent i = new Intent(getApplicationContext(), com.example.keskor.uwatch.Register.class);
+                Intent i = new Intent(getApplicationContext(), com.keskor.uwatch.Register.class);
                 startActivity(i);
             }
         });
@@ -37,7 +69,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -57,34 +89,4 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-    EditText username = (EditText)findViewById(R.id.editText2);
-    EditText password = (EditText)findViewById(R.id.editText);
-    Button login = (Button)findViewById(R.id.button);
-    TextView loginLockedTV = (TextView)findViewById(R.id.loginLockedTV);
-    TextView attemptsLeftTV = (TextView)findViewById(R.id.attemptsLeftTV);
-    TextView numberOfRemainingLoginAttemptsTV = (TextView) findViewById(R.id.numberOfRemainingLoginAttemptsTV);
-
-    public void login(View view)
-    {
-        if (username.getText().toString().equals("admin")&&
-        password.getText().toString().equals("admin"))
-        {
-        Toast.makeText(getApplicationContext(), "Hello admin!",
-                Toast.LENGTH_SHORT).show();
-    } else
-        {
-        Toast.makeText(getApplicationContext(), "Incorrect login!",
-                Toast.LENGTH_SHORT).show();
-        numberOfLoginAttempts--;
-        attemptsLeftTV.setVisibility(View.VISIBLE);
-        numberOfRemainingLoginAttemptsTV.setVisibility(View.VISIBLE);
-        numberOfRemainingLoginAttemptsTV.setText(Integer.toString(numberOfLoginAttempts));
-        if (numberOfLoginAttempts == 0) {
-            login.setEnabled(false);
-            loginLockedTV.setVisibility(View.VISIBLE);
-            loginLockedTV.setBackgroundColor(Color.RED);
-            loginLockedTV.setText("LOGIN LOCKED!!!");
-        }
-    }
-    }
 }

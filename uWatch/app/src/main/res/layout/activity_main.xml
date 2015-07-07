@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/android">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ff38d9ff">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,4 +91,34 @@
         android:layout_alignParentLeft="true"
         android:textSize="13dp"
         android:textColor="#000000"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/attemptsLeftTV"
+        android:layout_below="@+id/loginErrorMsg"
+        android:layout_alignLeft="@+id/numberOfRemainingLoginAttemptsTV"
+        android:layout_alignStart="@+id/numberOfRemainingLoginAttemptsTV"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/numberOfRemainingLoginAttemptsTV"
+        android:layout_below="@+id/attemptsLeftTV"
+        android:layout_toRightOf="@+id/pworda"
+        android:layout_toEndOf="@+id/pworda"
+        android:visibility="invisible"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/loginLockedTV"
+        android:layout_below="@+id/numberOfRemainingLoginAttemptsTV"
+        android:layout_alignLeft="@+id/numberOfRemainingLoginAttemptsTV"
+        android:layout_alignStart="@+id/numberOfRemainingLoginAttemptsTV"
+        android:visibility="invisible"/>
 </RelativeLayout>
