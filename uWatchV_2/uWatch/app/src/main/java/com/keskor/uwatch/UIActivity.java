@@ -1,6 +1,7 @@
 package com.keskor.uwatch;
 
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -18,21 +19,32 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.Toast;
+
 import java.io.File;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 
-public class UIActivity extends ActionBarActivity implements View.OnClickListener {
+public class UIActivity extends Activity implements View.OnClickListener {
 
 
     private static final int CAMERA_REQUEST = 0;
+    private static final int CAMERA_CAPTURE_IMAGE_REQUEST_CODE = 100;
+    private static final int CAMERA_CAPTURE_VIDEO_REQUEST_CODE = 200;
+    private static final int AUDIO_CAPTURE_REQUEST_CODE = 300;
     private static final int VIDEO_REQUEST = 0;
+    private static final int MEDIA_TYPE_IMAGE = 1;
+    private static final int MEDIA_TYPE_VIDEO=2;
+    private static final int MEDIA_TYPE_AUDIO=3;
     ImageView imageViewer;
-    Button buttonPhoto;
-    Button buttonVideo;
-    Button buttonAudio;
+    ImageButton buttonPhoto;
+    ImageButton buttonVideo;
+    ImageButton buttonAudio;
     Intent cameraIntent;
     Intent videoIntent;
     Intent audioIntent;
@@ -42,6 +54,7 @@ public class UIActivity extends ActionBarActivity implements View.OnClickListene
     Uri mCapturedImageURI;
     Uri uriSavedImage;
     File image;
+    String storagePath;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,10 +70,10 @@ public class UIActivity extends ActionBarActivity implements View.OnClickListene
 
     private void initialize()
     {
-        imageViewer = (ImageView) this.findViewById(R.id.imageView);
-        buttonPhoto = (Button) this.findViewById(R.id.photoButton);
-        buttonVideo = (Button) this.findViewById(R.id.videoButton);
-        buttonAudio = (Button) this.findViewById(R.id.voiceButton);
+        //imageViewer = (ImageView) this.findViewById(R.id.imageView);
+        buttonPhoto = (ImageButton) this.findViewById(R.id.uWatchPhoto);
+        buttonVideo = (ImageButton) this.findViewById(R.id.uWatchVideo);
+        buttonAudio = (ImageButton) this.findViewById(R.id.uWatchAudio);
 
         buttonPhoto.setOnClickListener(this);
         buttonVideo.setOnClickListener(this);
@@ -74,8 +87,8 @@ public class UIActivity extends ActionBarActivity implements View.OnClickListene
         //Perform action based on which button is Clicked
         switch (v.getId())
         {
-            case R.id.photoButton:
-                cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+            case R.id.uWatchPhoto:
+                //cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 /*ContentValues values = new ContentValues();
                 //values.put(MediaStore.Images.Media.TITLE, "u_watch.jpg");
                 values.put(android.provider.MediaStore.Images.Media.TITLE,"u_watch.jpg");
@@ -85,7 +98,7 @@ public class UIActivity extends ActionBarActivity implements View.OnClickListene
                 //Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
                 //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                 //Create folder
-                File imagesFolder = new File(Environment.getExternalStorageDirectory(), "uWatch/image");
+               /* File imagesFolder = new File(Environment.getExternalStorageDirectory(), "uWatch/image");
                 imagesFolder.mkdirs();
                 //Assign name for image
                 String f_name = "uWatch-" + System.currentTimeMillis() + ".jpg";
@@ -93,27 +106,32 @@ public class UIActivity extends ActionBarActivity implements View.OnClickListene
                 uriSavedImage = Uri.fromFile(image);
                 cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
                 //launch camera app with result code (forResult)
-                startActivityForResult(cameraIntent, 1);
+                startActivityForResult(cameraIntent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE); */
+
+                Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                uriSavedImage = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                i.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+                startActivityForResult(i, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
                 break;
 
-            case R.id.videoButton:
+            case R.id.uWatchVideo:
                 videoIntent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
                 startActivityForResult(videoIntent,VIDEO_REQUEST);
                 break;
 
-            case R.id.voiceButton:
-                //audioIntent = new Intent();
+            case R.id.uWatchAudio:
+                audioIntent = new Intent(this, RecordAudio.class);
+                startActivityForResult(audioIntent,AUDIO_CAPTURE_REQUEST_CODE);
                 break;
 
         }
 
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data)
-    {
-        if (requestCode == 1 && resultCode == RESULT_OK)
-        {
-            selectedImagePath = getRealPathFromURI(uriSavedImage);
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //if (requestCode == 1 && resultCode == RESULT_OK)
+        //{
+            /*selectedImagePath = getRealPathFromURI(uriSavedImage);
             Log.v("selectedImagePath", selectedImagePath);
             //imageViewer.setImageBitmap( BitmapFactory.decodeFile(selectedImagePath));
             try
@@ -135,10 +153,92 @@ public class UIActivity extends ActionBarActivity implements View.OnClickListene
             imageViewer.setImageBitmap(takenPhoto);
             */
 
+        try {
+
+
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
+                if (resultCode == RESULT_OK) {
+                    // successfully captured the image
+                    // launching upload activity
+                    previewImageActivity(true);
+
+
+                } else if (resultCode == RESULT_CANCELED) {
+                    // user cancelled Image capture
+                    Toast.makeText(getApplicationContext(), "User cancelled image capture", Toast.LENGTH_SHORT).show();
+                } else {
+                    // failed to capture image
+                    Toast.makeText(getApplicationContext(), "Sorry! Failed to capture image", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            //}
+
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+            System.out.println("I got here");
+        }
+    }
+
+    private void previewImageActivity(boolean b) {
+        // TODO Auto-generated method stub
+        try {
+            Intent i = new Intent(this, PreviewImage.class);
+            i.putExtra("filePath", uriSavedImage.getPath());
+            Toast.makeText(getApplicationContext(), uriSavedImage.getPath(), Toast.LENGTH_SHORT).show();
+
+            //i.putExtra("GeoLation", location);
+            i.putExtra("isImage", b);
+            startActivity(i);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+
+    private Uri getOutputMediaFileUri(int mediaTypeImage) {
+        // TODO Auto-generated method stub
+        return Uri.fromFile(getOutputMediaFile(mediaTypeImage));
+    }
+
+
+    private File getOutputMediaFile(int type) {
+        // TODO Auto-generated method stub
+        File mediaStorage = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM),"Camera");
+        if(!mediaStorage.exists()){
+
+            if(!mediaStorage.mkdirs()){
+
+                //Log.d(TAG, "Failed to create"+ Configuration.IMAGE_DIRECTORY_NAME+" driectory");
+                return null;
+            }
+
         }
 
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss",
+                Locale. getDefault() ) . format(new Date() ) ;
+        File mediaFile = null;
+        if (type == MEDIA_TYPE_IMAGE) {
 
+            mediaFile = new File(mediaStorage.getPath() + File.separator + "IMG_" + timeStamp + ".jpg") ;
+            storagePath =mediaFile.getPath();
+
+        } else if (type == MEDIA_TYPE_VIDEO) {
+
+            mediaFile = new File(mediaStorage. getPath() + File. separator + "VID_" + timeStamp + ".mp4") ;
+            storagePath =mediaFile.getPath();
+
+        } else {
+            return null;
+        }
+
+        return mediaFile;
     }
+
 
     public String getRealPathFromURI(Uri contentUri)
     {
@@ -178,28 +278,7 @@ public class UIActivity extends ActionBarActivity implements View.OnClickListene
     }
 
 
-        public void hashImage(String path) throws Exception
-        {
-            MessageDigest md = MessageDigest.getInstance("SHA-256");
-            FileInputStream fis = new FileInputStream(path);
 
-            byte[] dataBytes = new byte[1024];
-
-            int n_read = 0;
-            while ((n_read = fis.read(dataBytes)) != -1) {
-                md.update(dataBytes, 0, n_read);
-            };
-            byte[] md_bytes = md.digest();
-
-            //convert the byte to hex format method 1
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < md_bytes.length; i++) {
-                sb.append(Integer.toString((md_bytes[i] & 0xff) + 0x100, 16).substring(1));
-            }
-
-            System.out.println("Hex format : " + sb.toString());
-
-        }
 
 
 }
