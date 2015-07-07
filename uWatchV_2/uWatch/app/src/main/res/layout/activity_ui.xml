@@ -34,67 +34,26 @@
         android:layout_height="wrap_content"
         android:id="@+id/uWatchPhoto"
         android:src="@drawable/uwatchphoto"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="100dp"
+        android:layout_marginLeft="110dp"/>
+
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/uWatchVideo"
         android:src="@drawable/uwatchvideo"
-        android:layout_below="@+id/uWatchPhoto"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="45dp" />
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="230dp"
+  />
 
     <ImageButton
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/uWatchAudio"
         android:src="@drawable/uwatchaudio"
-        android:layout_below="@+id/uWatchVideo"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="45dp" />
-
-
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="take photo"
-        android:id="@+id/photoButton"
-        android:layout_below="@+id/textView"
-        android:layout_alignLeft="@+id/voiceButton"
-        android:layout_alignStart="@+id/voiceButton" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="record video"
-        android:id="@+id/videoButton"
-        android:layout_alignTop="@+id/uWatchVideo"
-        android:layout_alignLeft="@+id/photoButton"
-        android:layout_alignStart="@+id/photoButton"
-        android:layout_marginBottom="10dp"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="record audio"
-        android:id="@+id/voiceButton"
-        android:layout_alignTop="@+id/uWatchAudio"
-        android:layout_centerHorizontal="true" />
-
-    <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:id="@+id/imageView"
-        android:layout_toRightOf="@+id/photoButton"
-        android:layout_toEndOf="@+id/photoButton"
-        android:layout_below="@+id/voiceButton"
-        android:focusableInTouchMode="true" />
+        android:layout_marginLeft="110dp"
+        android:layout_marginTop="380dp" />
 
 
 </RelativeLayout>
