@@ -22,4 +22,28 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:21.0.3'
+
+    //compile 'org.apache.httpcomponents:httpmime:4.1.3'
+    compile ('org.apache.httpcomponents:httpmime:4.1.3') {
+        // avoid "is ignored for the default configuration X" warnings
+        // since httpclient is included in the android SDK.
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
+
+    compile ('org.apache.httpcomponents:httpcore:4.1.3') {
+        // avoid "is ignored for the default configuration X" warnings
+        // since httpclient is included in the android SDK.
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    }
 }
+
+android{
+    packagingOptions{
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/LICENSE.txt'
+    }
+}
+
