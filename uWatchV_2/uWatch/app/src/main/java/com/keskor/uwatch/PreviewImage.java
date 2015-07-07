@@ -76,6 +76,7 @@ public class PreviewImage extends Activity
         }
 
 
+
     }
 
     public class RequestSender extends AsyncTask<List<NameValuePair>, Integer,String> {
@@ -83,7 +84,9 @@ public class PreviewImage extends Activity
         @Override
         protected String doInBackground(List<NameValuePair>... params) {
             // TODO Auto-generated method stub
-            try {
+            try
+            {
+                System.out.println("Im sending to server now");
                 responseFromServer = request(Configuration.ServerURL, params[0]);
 
 
@@ -115,7 +118,17 @@ public class PreviewImage extends Activity
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK)
+        {
+            onCreate(new Bundle());
+        }
+
     }
+
+    /*public void startCalling(Intent i)
+    {
+        onCreate(new Bundle());
+    }*/
 
     public String request(String url,  List<NameValuePair> pairs) throws Exception {
         try{

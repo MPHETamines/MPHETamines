@@ -193,7 +193,10 @@ public class UIActivity extends Activity implements View.OnClickListener {
 
             //i.putExtra("GeoLation", location);
             i.putExtra("isImage", b);
-            startActivity(i);
+            startActivityForResult(i,CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
+            //startActivity(i);
+            //PreviewImage callOtherClass = new PreviewImage();
+            //callOtherClass.startCalling(i);
         }catch (Exception e)
         {
             e.printStackTrace();

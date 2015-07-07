@@ -91,6 +91,7 @@ public class RecordAudio extends Activity {
         {
             onCreate(new Bundle());
         }
+
     }
 
     public void start(View view){
