@@ -38,7 +38,7 @@ public class ExifData  {
         locationData+=getString(ExifInterface.TAG_GPS_LATITUDE,exif);
 
 
-        return getString(ExifInterface.TAG_FLASH,exif);
+        return locationData;
     }
 
 
