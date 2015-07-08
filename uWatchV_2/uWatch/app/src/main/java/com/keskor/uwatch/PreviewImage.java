@@ -77,9 +77,11 @@ public class PreviewImage extends Activity
             //previewImage.setOnClickListener(this);
             sendToServer.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     List<NameValuePair> values = null;
                     new RequestSender().execute(values);
+
                 }
             });
         }catch(Exception e)
@@ -94,7 +96,8 @@ public class PreviewImage extends Activity
     public class RequestSender extends AsyncTask<List<NameValuePair>, Integer,String> {
 
         @Override
-        protected String doInBackground(List<NameValuePair>... params) {
+        protected String doInBackground(List<NameValuePair>... params)
+        {
             // TODO Auto-generated method stub
             try
             {
@@ -111,18 +114,27 @@ public class PreviewImage extends Activity
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String result)
+        {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             try {
                 // if successful go to loggin
                 //processResponse();
+                tv.setText("Server message is "+result);
 
 
             } catch (Exception e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }
+
+        @Override
+        protected void onPreExecute()
+        {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
         }
     }
 
@@ -148,6 +160,10 @@ public class PreviewImage extends Activity
              * Get Captured File location
              */
 
+            //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            //StrictMode.setThreadPolicy(policy);
+
+
             HttpPost httppost = new HttpPost(url);
             File file = new File(filePath);
             if(file.exists()) {
@@ -159,12 +175,12 @@ public class PreviewImage extends Activity
                 httppost.setEntity(en);
 
                 System.out.println("executing request " + httppost.getRequestLine());
-                DefaultHttpClient httpclient = (DefaultHttpClient)  Wrapper.getNewHttpClient();
 
-                HttpResponse res = httpclient.execute(httppost);
                 try {
 
-                    System.out.println(res.getStatusLine());
+                    DefaultHttpClient httpclient = (DefaultHttpClient)  Wrapper.getNewHttpClient();
+                    HttpResponse res = httpclient.execute(httppost);
+                    System.out.println(res.getStatusLine() + " & STATUS CODE IS "+ res.getStatusLine().getStatusCode());
                     BufferedReader in = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
                     String line = "";
                     StringBuffer sb = new StringBuffer();
