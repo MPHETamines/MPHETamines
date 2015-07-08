@@ -3,6 +3,7 @@ package com.keskor.uwatch;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,6 +11,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -22,6 +25,7 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
@@ -36,12 +40,14 @@ public class PreviewImage extends Activity
     Button sendToServer;
     String filePath;
     String responseFromServer;
-
+    ExifData ed;
+    TextView tv;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.preview_image);
+
 
         initialize();
         //InputStream is = getResources().openRawResource(R.drawable.uwatchphoto);
@@ -50,11 +56,17 @@ public class PreviewImage extends Activity
 
     private void initialize()
     {
+
+
+        //ed.readExif();
         try
         {
             previewImage = (ImageView) this.findViewById(R.id.imageView2);
             sendToServer = (Button) this.findViewById(R.id.send_to_server);
             filePath = getIntent().getStringExtra("filePath");
+            tv=(TextView) this.findViewById(R.id.locationText);
+            ed=new ExifData(filePath);
+            tv.setText(ed.readExif());
 
             File image = new File(filePath);
             Uri uriSavedImage = Uri.fromFile(image);
@@ -201,4 +213,7 @@ public class PreviewImage extends Activity
         return sb.toString();
 
     }
+
+
+
 }
