@@ -26,7 +26,7 @@ public class Register extends ActionBarActivity {
     EditText editTextEmail;
     EditText editTextUserName;
     EditText editTextPassword;
-    //LoginDataBaseAdapter loginDataBaseAdapter;
+    DatabaseHandler databaseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +34,7 @@ public class Register extends ActionBarActivity {
         setContentView(R.layout.activity_register);
 
 
-        //loginDataBaseAdapter = new LoginDataBaseAdapter(this);
-        //loginDataBaseAdapter = loginDataBaseAdapter.open();
-
+        databaseHandler = new DatabaseHandler(this);
 
         editTextFirstName =(EditText)findViewById(R.id.fname);
         editTextLastName =(EditText)findViewById(R.id.lname);
@@ -66,7 +64,7 @@ public class Register extends ActionBarActivity {
                 else {
 
                     //insert into the database and go to successfully registered screen
-                    //loginDataBaseAdapter.insertEntry(fname,email,uname, pass);
+                    databaseHandler.addToUsers(new Users(fname,lname,uname,email,pass));
                     Intent i = new Intent(getApplicationContext(), com.keskor.uwatch.registered.class);
                     startActivity(i);
                 }
