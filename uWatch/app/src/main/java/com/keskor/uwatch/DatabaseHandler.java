@@ -2,6 +2,7 @@ package com.keskor.uwatch;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -63,4 +64,26 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         db.close();
 
     }
+
+        // Returns a single user by id
+        public Users getUser(String username,String password) {
+            // Open database for reading
+            SQLiteDatabase db = this.getReadableDatabase();
+            // Construct and execute query
+            Cursor cursor = db.query(TABLE_USERS,  // TABLE
+                    new String[] { USERNAME, PASSWORD }, // SELECT
+                    USERNAME + "= ?" + PASSWORD +"=?", new String[] { String.valueOf(username),String.valueOf(password)},  // WHERE, ARGS
+                    null, null, "id ASC", "1000"); // GROUP BY, HAVING, ORDER BY, LIMIT
+            if (cursor != null)
+                cursor.moveToFirst();
+            // Load result into model object
+            Users user = new Users(cursor.getString(1), cursor.getString(2));
+            user.setPassword(cursor.getString(cursor.getColumnIndexOrThrow(USERNAME)));
+            // Close the cursor
+            if (cursor != null)
+                cursor.close();
+            // return user
+            return user;
+        }
+
 }

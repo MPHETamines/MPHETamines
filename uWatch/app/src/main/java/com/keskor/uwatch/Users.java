@@ -21,6 +21,13 @@ public class Users {
         this.password = password;
     }
 
+    public Users(String username,String password)
+    {
+        super();
+        this.username = username;
+        this.password = password;
+    }
+
     public  String getName()
     {
         return name;
