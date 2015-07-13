@@ -5,6 +5,6 @@ package com.keskor.uwatch;
  */
 public class Configuration
 {
-    public static String ServerURL = "http://169.254.213.121/upload.php";
+    public static String ServerURL = "http://172.20.10.3/uWatch/upload.php";
    //public static String IMAGE_DIRECTORY_NAME = "/"
 }

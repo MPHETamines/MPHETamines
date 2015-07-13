@@ -14,13 +14,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HeaderElement;
+import org.apache.http.HeaderElementIterator;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -178,7 +184,27 @@ public class PreviewImage extends Activity
 
                 try {
 
+
                     DefaultHttpClient httpclient = (DefaultHttpClient)  Wrapper.getNewHttpClient();
+                    httpclient.setKeepAliveStrategy(new ConnectionKeepAliveStrategy() {
+                        @Override
+                        public long getKeepAliveDuration(HttpResponse response, HttpContext httpContext) {
+                            final HeaderElementIterator it = new BasicHeaderElementIterator(response
+                                    .headerIterator(HTTP.CONN_KEEP_ALIVE));
+                            while (it.hasNext()) {
+                                final HeaderElement he = it.nextElement();
+                                final String param = he.getName();
+                                final String value = he.getValue();
+                                if (value != null && param.equalsIgnoreCase("timeout")) {
+                                    try {
+                                        return Long.parseLong(value) * 1000;
+                                    } catch (final NumberFormatException ignore) {
+                                    }
+                                }
+                            }
+                            return 30 * 1000;
+                        }
+                    });
                     HttpResponse res = httpclient.execute(httppost);
                     System.out.println(res.getStatusLine() + " & STATUS CODE IS "+ res.getStatusLine().getStatusCode());
                     BufferedReader in = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
