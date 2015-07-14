@@ -3,6 +3,7 @@ package com.keskor.uwatch;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -10,18 +11,27 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import org.apache.http.HeaderElement;
+import org.apache.http.HeaderElementIterator;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.conn.ConnectionKeepAliveStrategy;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicHeaderElementIterator;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.protocol.HttpContext;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
@@ -36,12 +46,14 @@ public class PreviewImage extends Activity
     Button sendToServer;
     String filePath;
     String responseFromServer;
-
+    ExifData ed;
+    TextView tv;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.preview_image);
+
 
         initialize();
         //InputStream is = getResources().openRawResource(R.drawable.uwatchphoto);
@@ -50,11 +62,17 @@ public class PreviewImage extends Activity
 
     private void initialize()
     {
+
+
+        //ed.readExif();
         try
         {
             previewImage = (ImageView) this.findViewById(R.id.imageView2);
             sendToServer = (Button) this.findViewById(R.id.send_to_server);
             filePath = getIntent().getStringExtra("filePath");
+            tv=(TextView) this.findViewById(R.id.locationText);
+            ed=new ExifData(filePath);
+            tv.setText(ed.readExif());
 
             File image = new File(filePath);
             Uri uriSavedImage = Uri.fromFile(image);
@@ -65,9 +83,11 @@ public class PreviewImage extends Activity
             //previewImage.setOnClickListener(this);
             sendToServer.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View v) {
+                public void onClick(View v)
+                {
                     List<NameValuePair> values = null;
                     new RequestSender().execute(values);
+
                 }
             });
         }catch(Exception e)
@@ -76,14 +96,18 @@ public class PreviewImage extends Activity
         }
 
 
+
     }
 
     public class RequestSender extends AsyncTask<List<NameValuePair>, Integer,String> {
 
         @Override
-        protected String doInBackground(List<NameValuePair>... params) {
+        protected String doInBackground(List<NameValuePair>... params)
+        {
             // TODO Auto-generated method stub
-            try {
+            try
+            {
+                System.out.println("Im sending to server now");
                 responseFromServer = request(Configuration.ServerURL, params[0]);
 
 
@@ -96,12 +120,14 @@ public class PreviewImage extends Activity
         }
 
         @Override
-        protected void onPostExecute(String result) {
+        protected void onPostExecute(String result)
+        {
             // TODO Auto-generated method stub
             super.onPostExecute(result);
             try {
                 // if successful go to loggin
                 //processResponse();
+                tv.setText("Server message is "+result);
 
 
             } catch (Exception e) {
@@ -109,19 +135,40 @@ public class PreviewImage extends Activity
                 e.printStackTrace();
             }
         }
+
+        @Override
+        protected void onPreExecute()
+        {
+            // TODO Auto-generated method stub
+            super.onPreExecute();
+        }
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == RESULT_OK)
+        {
+            onCreate(new Bundle());
+        }
+
     }
+
+    /*public void startCalling(Intent i)
+    {
+        onCreate(new Bundle());
+    }*/
 
     public String request(String url,  List<NameValuePair> pairs) throws Exception {
         try{
             /**
              * Get Captured File location
              */
+
+            //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
+            //StrictMode.setThreadPolicy(policy);
+
 
             HttpPost httppost = new HttpPost(url);
             File file = new File(filePath);
@@ -134,12 +181,32 @@ public class PreviewImage extends Activity
                 httppost.setEntity(en);
 
                 System.out.println("executing request " + httppost.getRequestLine());
-                DefaultHttpClient httpclient = (DefaultHttpClient)  Wrapper.getNewHttpClient();
 
-                HttpResponse res = httpclient.execute(httppost);
                 try {
 
-                    System.out.println(res.getStatusLine());
+
+                    DefaultHttpClient httpclient = (DefaultHttpClient)  Wrapper.getNewHttpClient();
+                    httpclient.setKeepAliveStrategy(new ConnectionKeepAliveStrategy() {
+                        @Override
+                        public long getKeepAliveDuration(HttpResponse response, HttpContext httpContext) {
+                            final HeaderElementIterator it = new BasicHeaderElementIterator(response
+                                    .headerIterator(HTTP.CONN_KEEP_ALIVE));
+                            while (it.hasNext()) {
+                                final HeaderElement he = it.nextElement();
+                                final String param = he.getName();
+                                final String value = he.getValue();
+                                if (value != null && param.equalsIgnoreCase("timeout")) {
+                                    try {
+                                        return Long.parseLong(value) * 1000;
+                                    } catch (final NumberFormatException ignore) {
+                                    }
+                                }
+                            }
+                            return 30 * 1000;
+                        }
+                    });
+                    HttpResponse res = httpclient.execute(httppost);
+                    System.out.println(res.getStatusLine() + " & STATUS CODE IS "+ res.getStatusLine().getStatusCode());
                     BufferedReader in = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));
                     String line = "";
                     StringBuffer sb = new StringBuffer();
@@ -188,4 +255,7 @@ public class PreviewImage extends Activity
         return sb.toString();
 
     }
+
+
+
 }
