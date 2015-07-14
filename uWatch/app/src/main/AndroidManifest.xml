@@ -8,32 +8,53 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".cameraActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:theme="@style/FullscreenTheme" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:name=".registered"
+            android:label="@string/app_name" >
 
-                <category android:name="android.intent.category.LAUNCHER" />
+            <intent-filter>
+                <action android:name="com.keskor.uwatch.REGISTERED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
         <activity
-            android:name=".registered"
-            android:label="@string/title_activity_registered" >
+            android:name=".MainActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".loginsucess"
-            android:label="@string/title_activity_loginsucess" >
+            android:label="@string/app_name" >
+
+            <intent-filter>
+                <action android:name="com.keskor.uwatch.LOGINSUCESS"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".passwordreset"
-            android:label="@string/title_activity_passwordreset" >
+            android:label="@string/app_name" >
+
+            <intent-filter>
+                <action android:name="com.keskor.uwatch.PASSWORDRESET"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
         <activity
             android:name=".changepassword"
-            android:label="@string/title_activity_changepassword" >
+            android:label="@string/app_name" >
+
+            <intent-filter>
+                <action android:name="com.keskor.uwatch.CHANGEPASSWORD"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
         </activity>
     </application>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
 
 </manifest>

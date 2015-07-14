@@ -26,7 +26,7 @@ public class Register extends ActionBarActivity {
     EditText editTextEmail;
     EditText editTextUserName;
     EditText editTextPassword;
-    //LoginDataBaseAdapter loginDataBaseAdapter;
+    DatabaseHandler databaseHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,9 +34,7 @@ public class Register extends ActionBarActivity {
         setContentView(R.layout.activity_register);
 
 
-        //loginDataBaseAdapter = new LoginDataBaseAdapter(this);
-        //loginDataBaseAdapter = loginDataBaseAdapter.open();
-
+        databaseHandler = new DatabaseHandler(this);
 
         editTextFirstName =(EditText)findViewById(R.id.fname);
         editTextLastName =(EditText)findViewById(R.id.lname);
@@ -48,7 +46,6 @@ public class Register extends ActionBarActivity {
 
         // create a new user account
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
-
             public void onClick(View v) {
 
 
@@ -58,19 +55,24 @@ public class Register extends ActionBarActivity {
                 String email = editTextEmail.getText().toString();
                 String pass = editTextPassword.getText().toString();
 
+                try {
+                    if (fname.equals("") || lname.equals("") || uname.equals("") || email.equals("") || pass.equals("")) {
+                        Toast.makeText(getApplicationContext(), "Fill in the fields", Toast.LENGTH_LONG).show();
+                        return;
+                    } else {
 
-                if(fname.equals("") || lname.equals("") || uname.equals("") || email.equals("") || pass.equals("")) {
-                    Toast.makeText(getApplicationContext(), "Fill in the fields", Toast.LENGTH_LONG).show();
-                    return;
+                        //insert into the database and go to successfully registered screen
+                        databaseHandler.addToUsers(new Users(fname, lname, uname, email, pass));
+                        Intent i = new Intent(getApplicationContext(), com.keskor.uwatch.registered.class);
+                        startActivity(i);
+                    }
                 }
-                else {
-
-                    //insert into the database and go to successfully registered screen
-                    //loginDataBaseAdapter.insertEntry(fname,email,uname, pass);
-                    Intent i = new Intent(getApplicationContext(), com.keskor.uwatch.registered.class);
-                    startActivity(i);
+                catch (Exception e)
+                {
+                    e.printStackTrace();
                 }
             }
+
         });
 
         Button loginScreen = (Button) findViewById(R.id.bktologin);

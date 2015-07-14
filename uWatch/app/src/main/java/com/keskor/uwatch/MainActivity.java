@@ -1,6 +1,7 @@
 package com.keskor.uwatch;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.ActionBarActivity;
@@ -13,11 +14,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
-public class MainActivity extends ActionBarActivity {
-    int numberOfLoginAttempts = 3;
+public class MainActivity extends Activity {
+    public int numberOfLoginAttempts = 3;
     EditText username = (EditText)findViewById(R.id.email);
     EditText password = (EditText)findViewById(R.id.pword);
+    Users user;
     Button login = (Button)findViewById(R.id.login);
     TextView loginLockedTV = (TextView)findViewById(R.id.loginLockedTV);
     TextView attemptsLeftTV = (TextView)findViewById(R.id.attemptsLeftTV);
@@ -34,10 +35,10 @@ public class MainActivity extends ActionBarActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    if (username.getText().toString().equals("admin") &&
-                            password.getText().toString().equals("admin")) {
-                        Toast.makeText(getApplicationContext(), "Hello admin!",
-                                Toast.LENGTH_SHORT).show();
+                try {
+                    if (username.getText().toString().equals(user.getUsername()) &&
+                            password.getText().toString().equals(user.getPassword())) {
+
                         Intent i = new Intent(getApplicationContext(), com.keskor.uwatch.loginsucess.class);
                         startActivity(i);
                     } else {
@@ -55,6 +56,11 @@ public class MainActivity extends ActionBarActivity {
                         }
                     }
                 }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
         });
         registerButton.setOnClickListener(new View.OnClickListener() {
 
