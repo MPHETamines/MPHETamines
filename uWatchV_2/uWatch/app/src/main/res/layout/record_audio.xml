@@ -2,7 +2,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecordAudio" >
+    tools:context=".RecordAudio"
+    android:background="@drawable/background_four">
 
     <TextView
         android:id="@+id/text1"
