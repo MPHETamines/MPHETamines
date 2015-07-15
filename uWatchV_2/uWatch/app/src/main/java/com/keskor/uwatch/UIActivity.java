@@ -42,9 +42,9 @@ public class UIActivity extends Activity implements View.OnClickListener {
     private static final int MEDIA_TYPE_VIDEO=2;
     private static final int MEDIA_TYPE_AUDIO=3;
     ImageView imageViewer;
-    ImageButton buttonPhoto;
-    ImageButton buttonVideo;
-    ImageButton buttonAudio;
+    ImageView buttonPhoto;
+    ImageView buttonVideo;
+    ImageView buttonAudio;
     Intent cameraIntent;
     Intent videoIntent;
     Intent audioIntent;
@@ -52,7 +52,7 @@ public class UIActivity extends Activity implements View.OnClickListener {
     String selectedImagePath;
     String picturePath;
     Uri mCapturedImageURI;
-    Uri uriSavedImage;
+    Uri uriSavedPDE;
     File image;
     String storagePath;
 
@@ -71,9 +71,9 @@ public class UIActivity extends Activity implements View.OnClickListener {
     private void initialize()
     {
         //imageViewer = (ImageView) this.findViewById(R.id.imageView);
-        buttonPhoto = (ImageButton) this.findViewById(R.id.uWatchPhoto);
-        buttonVideo = (ImageButton) this.findViewById(R.id.uWatchVideo);
-        buttonAudio = (ImageButton) this.findViewById(R.id.uWatchAudio);
+        buttonPhoto = (ImageView) this.findViewById(R.id.uWatchPhoto);
+        buttonVideo = (ImageView) this.findViewById(R.id.uWatchVideo);
+        buttonAudio = (ImageView) this.findViewById(R.id.uWatchAudio);
 
         buttonPhoto.setOnClickListener(this);
         buttonVideo.setOnClickListener(this);
@@ -89,35 +89,21 @@ public class UIActivity extends Activity implements View.OnClickListener {
         switch (v.getId())
         {
             case R.id.uWatchPhoto:
-                //cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                /*ContentValues values = new ContentValues();
-                //values.put(MediaStore.Images.Media.TITLE, "u_watch.jpg");
-                values.put(android.provider.MediaStore.Images.Media.TITLE,"u_watch.jpg");
-                mCapturedImageURI  = getContentResolver().insert(android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                cameraIntent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, mCapturedImageURI);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);*/
-                //Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-                //Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                //Create folder
-               /* File imagesFolder = new File(Environment.getExternalStorageDirectory(), "uWatch/image");
-                imagesFolder.mkdirs();
-                //Assign name for image
-                String f_name = "uWatch-" + System.currentTimeMillis() + ".jpg";
-                image= new File(imagesFolder, f_name);
-                uriSavedImage = Uri.fromFile(image);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
-                //launch camera app with result code (forResult)
-                startActivityForResult(cameraIntent, CAMERA_CAPTURE_IMAGE_REQUEST_CODE); */
-
                 Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                uriSavedImage = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
-                i.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+                uriSavedPDE = getOutputMediaFileUri(MEDIA_TYPE_IMAGE);
+                i.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedPDE);
                 startActivityForResult(i, CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
                 break;
 
             case R.id.uWatchVideo:
-                videoIntent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
-                startActivityForResult(videoIntent,VIDEO_REQUEST);
+                try
+                {
+                    recordingVideo();
+                }
+                catch(Exception e)
+                {
+                    e.printStackTrace();
+                }
                 break;
 
             case R.id.uWatchAudio:
@@ -129,53 +115,58 @@ public class UIActivity extends Activity implements View.OnClickListener {
 
     }
 
+    private void recordingVideo()
+    {
+        Intent videoIntent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+        uriSavedPDE = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+        videoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+        videoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedPDE);
+        startActivityForResult(videoIntent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+    }
+
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        //if (requestCode == 1 && resultCode == RESULT_OK)
-        //{
-            /*selectedImagePath = getRealPathFromURI(uriSavedImage);
-            Log.v("selectedImagePath", selectedImagePath);
-            //imageViewer.setImageBitmap( BitmapFactory.decodeFile(selectedImagePath));
-            try
-            {
-                hashImage(selectedImagePath);
-            } catch (Exception e)
-            {
-                e.printStackTrace();
-            }
-
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            imageViewer.setImageBitmap(photo);
-
-            //Bitmap photo = (Bitmap) data.getExtras().get("data");
-            //imageViewer.setImageBitmap(photo);
-            /*
-            Bundle extras = data.getExtras();
-            takenPhoto = (Bitmap) extras.get("data");
-            imageViewer.setImageBitmap(takenPhoto);
-            */
 
         try {
 
 
             super.onActivityResult(requestCode, resultCode, data);
 
-            if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE) {
-                if (resultCode == RESULT_OK) {
-                    // successfully captured the image
-                    // launching upload activity
+            super.onActivityResult(requestCode, resultCode, data);
+
+            if (requestCode == CAMERA_CAPTURE_IMAGE_REQUEST_CODE)
+            {
+                if (resultCode == RESULT_OK)
+                {
+                    //CALL previewActivity() that will further open a new activity that will upload PDE
                     previewImageActivity(true);
 
-
                 } else if (resultCode == RESULT_CANCELED) {
-                    // user cancelled Image capture
-                    Toast.makeText(getApplicationContext(), "User cancelled image capture", Toast.LENGTH_SHORT).show();
-                } else {
-                    // failed to capture image
-                    Toast.makeText(getApplicationContext(), "Sorry! Failed to capture image", Toast.LENGTH_SHORT).show();
+                    // user press cancel button
+                    Toast.makeText(getApplicationContext(), "You cancelled capture of image", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    // application fail to capture image due to some error
+                    Toast.makeText(getApplicationContext(), "Application failed to capture image", Toast.LENGTH_SHORT).show();
                 }
             }
-
-            //}
+            else if(requestCode == CAMERA_CAPTURE_VIDEO_REQUEST_CODE)
+            {
+                if(resultCode == RESULT_OK)
+                {
+                    //CALL previewActivity() that will further open a new activity that will upload PDE
+                    previewVideoActivity(true);
+                }else if (resultCode == RESULT_CANCELED)
+                {
+                    // user press cancel button
+                    Toast.makeText(getApplicationContext(), "You cancelled capture of video", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    // application fail to capture video due to some error
+                    Toast.makeText(getApplicationContext(), "Application failed to capture video", Toast.LENGTH_SHORT).show();
+                }
+            }
 
         }catch (Exception e)
         {
@@ -188,15 +179,29 @@ public class UIActivity extends Activity implements View.OnClickListener {
         // TODO Auto-generated method stub
         try {
             Intent i = new Intent(this, PreviewImage.class);
-            i.putExtra("filePath", uriSavedImage.getPath());
-            Toast.makeText(getApplicationContext(), uriSavedImage.getPath(), Toast.LENGTH_SHORT).show();
+            i.putExtra("filePath", uriSavedPDE.getPath());
+            Toast.makeText(getApplicationContext(), uriSavedPDE.getPath(), Toast.LENGTH_SHORT).show();
 
             //i.putExtra("GeoLation", location);
             i.putExtra("isImage", b);
-            startActivityForResult(i,CAMERA_CAPTURE_IMAGE_REQUEST_CODE);
-            //startActivity(i);
-            //PreviewImage callOtherClass = new PreviewImage();
-            //callOtherClass.startCalling(i);
+            startActivity(i);
+        }catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    private void previewVideoActivity(boolean b)
+    {
+        // TODO Auto-generated method stub
+        try {
+            Intent i = new Intent(this, PreviewVideo.class);
+            i.putExtra("filePath", uriSavedPDE.getPath());
+            Toast.makeText(getApplicationContext(), uriSavedPDE.getPath(), Toast.LENGTH_SHORT).show();
+
+            //i.putExtra("GeoLation", location);
+            i.putExtra("isVideo", b);
+            startActivity(i);
         }catch (Exception e)
         {
             e.printStackTrace();
@@ -241,21 +246,6 @@ public class UIActivity extends Activity implements View.OnClickListener {
         }
 
         return mediaFile;
-    }
-
-
-    public String getRealPathFromURI(Uri contentUri)
-    {
-        String res = null;
-        String[] my_data = {android.provider.MediaStore.Images.Media.DATA };
-        Cursor cursor = getContentResolver().query(contentUri, my_data, null, null, null);
-        if(cursor.moveToFirst())
-        {
-            int column_index = cursor.getColumnIndexOrThrow(android.provider.MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
-        }
-        cursor.close();
-        return res;
     }
 
 

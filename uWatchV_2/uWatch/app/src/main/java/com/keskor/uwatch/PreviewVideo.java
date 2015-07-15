@@ -7,12 +7,16 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.VideoView;
 
 import org.apache.http.HeaderElement;
 import org.apache.http.HeaderElementIterator;
@@ -40,9 +44,13 @@ import java.util.List;
 /**
  * Created by Keskor on 04-Jul-15.
  */
-public class PreviewImage extends Activity
+public class PreviewVideo extends Activity
 {
-    ImageView previewImage;
+
+    VideoView previewVideo;
+    DisplayMetrics dm;
+    SurfaceView sur_View;
+    MediaController media_Controller;
     Button sendToServer;
     String filePath;
     String responseFromServer;
@@ -52,12 +60,11 @@ public class PreviewImage extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.preview_image);
+        setContentView(R.layout.preview_video);
 
 
         initialize();
-        //InputStream is = getResources().openRawResource(R.drawable.uwatchphoto);
-        //takenPhoto = BitmapFactory.decodeStream(is);
+
     }
 
     private void initialize()
@@ -67,16 +74,37 @@ public class PreviewImage extends Activity
         //ed.readExif();
         try
         {
-            previewImage = (ImageView) this.findViewById(R.id.imageView2);
-            sendToServer = (Button) this.findViewById(R.id.send_to_server);
-            filePath = getIntent().getStringExtra("filePath");
-            tv=(TextView) this.findViewById(R.id.locationText);
-            ed=new ExifData(filePath);
-            tv.setText(ed.readExif());
 
-            File image = new File(filePath);
-            Uri uriSavedImage = Uri.fromFile(image);
-            previewImage.setImageURI(uriSavedImage);
+
+
+
+                previewVideo = (VideoView) this.findViewById(R.id.myVideoView);
+                sendToServer = (Button) this.findViewById(R.id.send_to_server);
+                filePath = getIntent().getStringExtra("filePath");
+                tv = (TextView) this.findViewById(R.id.locationText);
+                ed = new ExifData(filePath);
+                tv.setText(ed.readExif());
+
+                File video = new File(filePath);
+                Uri uriSavedVideo = Uri.fromFile(video);
+                previewVideo.setVideoURI(uriSavedVideo);
+
+            media_Controller = new MediaController(this);
+            dm = new DisplayMetrics();
+            this.getWindowManager().getDefaultDisplay().getMetrics(dm);
+            int height = dm.heightPixels;
+            int width = dm.widthPixels;
+            previewVideo.setMinimumWidth(width);
+            previewVideo.setMinimumHeight(height);
+            previewVideo.setMediaController(media_Controller);
+            //video_player_view.setVideoPath("");
+            previewVideo.seekTo(100);
+            previewVideo.start();
+
+
+
+
+
 
 
             //previewImage.setOnClickListener(this);
@@ -143,7 +171,7 @@ public class PreviewImage extends Activity
         }
     }
 
-    @Override
+   /* @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data)
     {
         super.onActivityResult(requestCode, resultCode, data);
@@ -152,22 +180,14 @@ public class PreviewImage extends Activity
             onCreate(new Bundle());
         }
 
-    }
-
-    /*public void startCalling(Intent i)
-    {
-        onCreate(new Bundle());
     }*/
+
 
     public String request(String url,  List<NameValuePair> pairs) throws Exception {
         try{
             /**
              * Get Captured File location
              */
-
-            //StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
-            //StrictMode.setThreadPolicy(policy);
-
 
             HttpPost httppost = new HttpPost(url);
             File file = new File(filePath);
@@ -250,8 +270,8 @@ public class PreviewImage extends Activity
             sb.append(Integer.toString((md_bytes[i] & 0xff) + 0x100, 16).substring(1));
         }
 
-        //System.out.println("Hex format : " + sb.toString());
         return sb.toString();
+
 
     }
 
