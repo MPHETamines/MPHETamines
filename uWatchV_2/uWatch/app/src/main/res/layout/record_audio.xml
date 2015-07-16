@@ -68,4 +68,22 @@
             android:text="stop playing" />
     </LinearLayout>
 
+    <LinearLayout  android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/linear2"
+        android:id="@+id/linear3"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/send_to_server"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:enabled="false"
+            android:layout_marginTop="50dp"
+            android:text="UPLOAD" />
+
+
+    </LinearLayout>
+
 </RelativeLayout>

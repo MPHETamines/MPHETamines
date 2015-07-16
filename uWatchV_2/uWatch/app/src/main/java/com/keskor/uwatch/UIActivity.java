@@ -117,11 +117,17 @@ public class UIActivity extends Activity implements View.OnClickListener {
 
     private void recordingVideo()
     {
-        Intent videoIntent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
-        uriSavedPDE = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
-        videoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-        videoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedPDE);
-        startActivityForResult(videoIntent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+        try
+        {
+            Intent videoIntent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+            uriSavedPDE = getOutputMediaFileUri(MEDIA_TYPE_VIDEO);
+            videoIntent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+            videoIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedPDE);
+            startActivityForResult(videoIntent, CAMERA_CAPTURE_VIDEO_REQUEST_CODE);
+        }catch(Exception e)
+        {
+            e.getMessage();
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -172,6 +178,7 @@ public class UIActivity extends Activity implements View.OnClickListener {
         {
             e.printStackTrace();
             System.out.println("I got here");
+            e.getMessage();
         }
     }
 
@@ -233,7 +240,7 @@ public class UIActivity extends Activity implements View.OnClickListener {
         File mediaFile = null;
         if (type == MEDIA_TYPE_IMAGE) {
 
-            mediaFile = new File(mediaStorage.getPath() + File.separator + "IMG_" + timeStamp + ".jpg") ;
+            mediaFile = new File(mediaStorage.getPath() + File.separator + "uWatch_" + timeStamp + ".jpg") ;
             storagePath =mediaFile.getPath();
 
         } else if (type == MEDIA_TYPE_VIDEO) {
