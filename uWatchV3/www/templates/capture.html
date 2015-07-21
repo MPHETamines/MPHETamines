@@ -1,0 +1,20 @@
+<iom-view>
+  <ion-header-bar class="bar-assertive">
+    <h1 class="title">Capture</h1>
+  </ion-header-bar>
+
+  <ion-content class="padding">
+    <img  ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
+    <img  ng-show="imgURI === undefined" ng-src="img/placeholder.jpg">
+
+    <button class="button icon-left ion-ios-camera button-block button-energized" ng-click="takePicture()">
+      Picture
+    </button>
+    <button class="button icon-left ion-videocamera button-block button-energized" ng-click-"streamVideo()">
+      Video
+    </button>
+    <button class="button icon-left ion-ios-mic button-block button-energized">
+      Audio
+    </button>
+  </ion-content>
+</ion-view>
