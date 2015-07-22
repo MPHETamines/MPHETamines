@@ -77,8 +77,7 @@ public class PreviewImage extends Activity
             File image = new File(filePath);
             Uri uriSavedImage = Uri.fromFile(image);
             previewImage.setImageURI(uriSavedImage);
-            //Bitmap photo = (Bitmap) data.getExtras().get("data");
-            //previewImage.setImageBitmap(photo);
+
 
             //previewImage.setOnClickListener(this);
             sendToServer.setOnClickListener(new View.OnClickListener() {
@@ -127,7 +126,7 @@ public class PreviewImage extends Activity
             try {
                 // if successful go to loggin
                 //processResponse();
-                tv.setText("Server message is "+result);
+                tv.setText("Server Respond : "+result);
 
 
             } catch (Exception e) {
@@ -186,7 +185,7 @@ public class PreviewImage extends Activity
 
 
                     DefaultHttpClient httpclient = (DefaultHttpClient)  Wrapper.getNewHttpClient();
-                    httpclient.setKeepAliveStrategy(new ConnectionKeepAliveStrategy() {
+                   /* httpclient.setKeepAliveStrategy(new ConnectionKeepAliveStrategy() {
                         @Override
                         public long getKeepAliveDuration(HttpResponse response, HttpContext httpContext) {
                             final HeaderElementIterator it = new BasicHeaderElementIterator(response
@@ -196,15 +195,18 @@ public class PreviewImage extends Activity
                                 final String param = he.getName();
                                 final String value = he.getValue();
                                 if (value != null && param.equalsIgnoreCase("timeout")) {
-                                    try {
+                                    try
+                                    {
                                         return Long.parseLong(value) * 1000;
-                                    } catch (final NumberFormatException ignore) {
+                                    } catch (final NumberFormatException ignore)
+                                    {
+                                        ignore.getMessage();
                                     }
                                 }
                             }
                             return 30 * 1000;
                         }
-                    });
+                    }); */
                     HttpResponse res = httpclient.execute(httppost);
                     System.out.println(res.getStatusLine() + " & STATUS CODE IS "+ res.getStatusLine().getStatusCode());
                     BufferedReader in = new BufferedReader(new InputStreamReader(res.getEntity().getContent()));

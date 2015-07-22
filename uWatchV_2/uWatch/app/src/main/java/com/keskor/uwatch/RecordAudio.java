@@ -24,6 +24,7 @@ public class RecordAudio extends Activity {
     private Button playBtn;
     private Button stopPlayBtn;
     private TextView text;
+    Button sendToServer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +82,13 @@ public class RecordAudio extends Activity {
                 stopPlay(v);
             }
         });
+
+        sendToServer = (Button)findViewById(R.id.send_to_server);
+
+
+
+
+
     }
 
     @Override
@@ -173,6 +181,10 @@ public class RecordAudio extends Activity {
             e.printStackTrace();
         }
     }
+
+
+
+
 
 }
 
