@@ -31,11 +31,36 @@ import org.apache.http.protocol.HttpContext;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.List;
+
+import javax.crypto.Cipher;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import javax.crypto.Cipher;
+import java.io.FileInputStream;
+import java.security.MessageDigest;
 
 /**
  * Created by Keskor on 04-Jul-15.
@@ -48,6 +73,7 @@ public class PreviewImage extends Activity
     String responseFromServer;
     ExifData ed;
     TextView tv;
+    Uri uriSavedImage;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -75,7 +101,7 @@ public class PreviewImage extends Activity
             tv.setText(ed.readExif());
 
             File image = new File(filePath);
-            Uri uriSavedImage = Uri.fromFile(image);
+            uriSavedImage = Uri.fromFile(image);
             previewImage.setImageURI(uriSavedImage);
 
 
@@ -173,7 +199,7 @@ public class PreviewImage extends Activity
             File file = new File(filePath);
             if(file.exists()) {
                 FileBody capturedFile = new FileBody(file);
-                StringBody hash = new StringBody(hashPDE(filePath));
+                StringBody hash = new StringBody(hashencryptFile(filePath));
                 MultipartEntity en = new MultipartEntity();
                 en.addPart("capturedPDE", capturedFile);
                 en.addPart("hash", hash);
@@ -234,28 +260,136 @@ public class PreviewImage extends Activity
         return null;
     }
 
-    public String hashPDE(String path) throws Exception
+    //hashing/encryption/decryptiion
+    public static final String ALGORITHM = "RSA";
+    public final String PRIVATE_KEY_FILE =uriSavedImage.getPath()+"\\\\keys\\\\private.key";
+    public  final String PUBLIC_KEY_FILE =uriSavedImage.getPath()+"\\\\keys\\\\public.key";
+
+    public  void generateKey() {
+        try {
+            final KeyPairGenerator keyGen = KeyPairGenerator.getInstance(ALGORITHM);
+            keyGen.initialize(1024);
+            final KeyPair key = keyGen.generateKeyPair();
+
+            File privateKeyFile = new File(PRIVATE_KEY_FILE);
+            File publicKeyFile = new File(PUBLIC_KEY_FILE);
+
+            // Create files to store public and private key
+            if (privateKeyFile.getParentFile() != null) {
+                privateKeyFile.getParentFile().mkdirs();
+            }
+            privateKeyFile.createNewFile();
+
+            if (publicKeyFile.getParentFile() != null) {
+                publicKeyFile.getParentFile().mkdirs();
+            }
+            publicKeyFile.createNewFile();
+
+            // Saving the Public key in a file
+            ObjectOutputStream publicKeyOS = new ObjectOutputStream(
+                    new FileOutputStream(publicKeyFile));
+            publicKeyOS.writeObject(key.getPublic());
+            publicKeyOS.close();
+
+            // Saving the Private key in a file
+            ObjectOutputStream privateKeyOS = new ObjectOutputStream(
+                    new FileOutputStream(privateKeyFile));
+            privateKeyOS.writeObject(key.getPrivate());
+            privateKeyOS.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+    public  boolean areKeysPresent() {
+
+        File privateKey = new File(PRIVATE_KEY_FILE);
+        File publicKey = new File(PUBLIC_KEY_FILE);
+
+        if (privateKey.exists() && publicKey.exists()) {
+            return true;
+        }
+        return false;
+    }
+
+    public byte[] encrypt(String text, PublicKey key) {
+        byte[] cipherText = null;
+        try {
+            // get an RSA cipher object and print the provider
+            final Cipher cipher = Cipher.getInstance(ALGORITHM);
+            // encrypt the plain text using the public key
+            cipher.init(Cipher.ENCRYPT_MODE, key);
+            cipherText = cipher.doFinal(text.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return cipherText;
+    }
+
+    public  String decrypt(byte[] text, PrivateKey key) {
+        byte[] dectyptedText = null;
+        try {
+            // get an RSA cipher object and print the provider
+            final Cipher cipher = Cipher.getInstance(ALGORITHM);
+
+            // decrypt the text using the private key
+            cipher.init(Cipher.DECRYPT_MODE, key);
+            dectyptedText = cipher.doFinal(text);
+
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        return new String(dectyptedText);
+    }
+
+    public  String hashencryptFile(String path) throws Exception
     {
+        //start hashing image
         MessageDigest md = MessageDigest.getInstance("SHA-256");
         FileInputStream fis = new FileInputStream(path);
 
         byte[] dataBytes = new byte[1024];
 
-        int n_read = 0;
-        while ((n_read = fis.read(dataBytes)) != -1) {
-            md.update(dataBytes, 0, n_read);
+        int nread = 0;
+        while ((nread = fis.read(dataBytes)) != -1) {
+            md.update(dataBytes, 0, nread);
         };
-        byte[] md_bytes = md.digest();
+        byte[] mdbytes = md.digest();
 
         //convert the byte to hex format method 1
         StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < md_bytes.length; i++) {
-            sb.append(Integer.toString((md_bytes[i] & 0xff) + 0x100, 16).substring(1));
+        for (int i = 0; i < mdbytes.length; i++) {
+            sb.append(Integer.toString((mdbytes[i] & 0xff) + 0x100, 16).substring(1));
+        }
+        //start encryption
+        // Check if the pair of keys are present else generate those.
+        if (!areKeysPresent()) {
+            // Method generates a pair of keys using the RSA algorithm and stores it
+            // in their respective files
+            generateKey();
         }
 
-        //System.out.println("Hex format : " + sb.toString());
-        return sb.toString();
+        final String originalText = sb.toString();
+        ObjectInputStream inputStream = null;
 
+        // Encrypt the string using the public key
+        inputStream = new ObjectInputStream(new FileInputStream(PUBLIC_KEY_FILE));
+        final PublicKey publicKey = (PublicKey) inputStream.readObject();
+        final byte[] cipherText = encrypt(originalText, publicKey);
+
+
+        // Decrypt the cipher text using the private key.
+        inputStream = new ObjectInputStream(new FileInputStream(PRIVATE_KEY_FILE));
+        final PrivateKey privateKey = (PrivateKey) inputStream.readObject();
+        final String plainText = decrypt(cipherText, privateKey);
+
+        // Printing the Original, Encrypted and Decrypted Text
+        System.out.println("HashValue: " + originalText);
+        System.out.println("Encrypted: " +cipherText.toString());
+        System.out.println("Decrypted: " + plainText);
+
+        return cipherText.toString();
     }
 
 
