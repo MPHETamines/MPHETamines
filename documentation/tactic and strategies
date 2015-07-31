@@ -15,7 +15,7 @@ Model view controller: Ionic framework is build from this pattern, where the vie
 Pipes and Filters: We will be tagging images, videos and audio files being uploaded to the firebase and using this design pattern to allow us to easily search and filter by tags and categorize the pde being uploaded.
 3. Tactics
 Security: We do not catche user credentials nor keep them in history. This forces users to login everytime they need to login to the our system.  Users have a limited amout of tries to login. 
-Maintainability: Our views are templated, seperating the view from the templates. Since our system relies on AngulaJS, we inject dependencies and as such the is Inversion of control (IoC).
+Maintainability and Flexibility: Our views are templated, seperating the view from the templates. Since our system relies on AngulaJS, we inject dependencies and as such the is Inversion of control (IoC).
 Perfomance: We catche users's retried pde so that the system can respomd faster especially on slow internet connection. Firebase DB also caches data in case the DB goes down and once it goes up again, it sychronizes the catched data with the data in the DB.
 Scalability: We decouple the client from the serve and only have a handle to the firebase serve in a form of a link and connecting to its API, this is possible through a RESTful API.
 We use local storage to store any pde that the user chooses to upload later in case the user did not have internet connection at the time the pde was captured.
