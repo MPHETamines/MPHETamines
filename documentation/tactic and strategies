@@ -1,0 +1,7 @@
+Architectural tactics or strategies
+1. Design Patterns
+Since our system is security based, we will be using Strategy design pattern to allow client to choose from different types of encryption algorithms so that the client can encrypt the pde in a way that suits his/her need.
+We also use factory design pattern to create different types of encryption/decryption methods. All the encryption/decryption methods will behave differently and differ in a way the algorithm is implemented.
+2. Architectural Patterns
+Model view controller: Ionic framework is build from this pattern, where the view is the templated html pages, the model is the json object to and from the firebase database and the controller is the javascript functions to implement the system's functionality.
+Pipes and Filters: We will be tagging images, videos and audio files being uploaded to the firebase and using this design pattern to allow us to easily search and filter by tags and categorize the pde being uploaded.
