@@ -3,12 +3,11 @@
 // angular.module is a global place for creating, registering and retrieving Angular modules
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
-
-var myService = angular.module("starter", ["ionic", "ngCordova", "firebase"]);
-var fb = new Firebase("https://glaring-torch-4614.firebaseio.com/");
 //var myService = angular.module('starter', ['ionic','ngCordova'])
+var imageApp = angular.module("starter", ["ionic", "ngCordova","firebase"]);
+var fb = new Firebase("https://torrid-heat-8946.firebaseio.com/");
 
-myService.run(function($ionicPlatform) {
+imageApp.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -18,43 +17,230 @@ myService.run(function($ionicPlatform) {
     }
     if(window.StatusBar) {
       StatusBar.styleDefault();
-    }
-    if(window.Connection){ //check if connaction plugin is installed
-      checkConnection();
+    }   
+    if(window.Connection){ //check if connection plugin is installed
+      checkConnection(); //check type of connection
+      getLocation() //for demonstration purpose
     }
   });
 });
 
+imageApp.config(function($stateProvider, $urlRouterProvider) {
+    $stateProvider
+        .state('tab',{
+            url:'/tabs',
+            abstract:true,
+            templateUrl: 'templates/tabs.html',
+            catche:false
+            
+        })
+        .state('tab.login',{
+            url: '/login',
+            views:{
+                'tabs-login':{
+                    templateUrl:'templates/login.html',
+                    controller:'FirebaseController',
+                    catche:false
+                }
+            }
+        })
+        .state('tab.view',{
+            url: '/view',
+            views:{
+                'tabs-view':{
+                    templateUrl:'templates/view.html',
+                    controller:'SecureController'
+                }
+            }
+        })
+        .state('tab.capture',{
+            url: '/capture',
+            views:{
+                'tabs-capture':{
+                    templateUrl:'templates/capture.html',
+                    controller:'SecureController'
+                }
+            }
+        });
 
-/*
-  This is the main controller for the app, please define all your methods in here 
-*/
+    $urlRouterProvider.otherwise('/tabs/login');
+});
 
-myService.controller("MasterController", function($scope, $cordovaCamera, $cordovaMedia) {
-  //capturing a picture method
-    $scope.takePicture = function() {
+imageApp.controller("FirebaseController", function($scope, $state, $firebaseAuth, $ionicLoading, $ionicPopup, $timeout) {
+
+
+    var loading = function(){
+      // Setup the loader
+          $ionicLoading.show({
+            content: 'Loading',
+            animation: 'fade-in',
+            showBackdrop: true,
+            maxWidth: 200,
+            showDelay: 0
+          });
+          
+          // Set a timeout to clear loader, however you would actually call the $ionicLoading.hide(); method whenever everything is ready or loaded.
+          $timeout(function () {
+            $ionicLoading.hide();
+          }, 3000);
+          
+    }
+
+
+
+    // An alert dialog
+     var regAlert = function() {
+       var alertPopup = $ionicPopup.alert({
+         title: 'Error',
+         template: 'The email address provided is not registered.'
+       });
+       alertPopup.then(function(res) {
+         console.log(msg);
+       });
+     };
+
+
+
+    // An alert dialog
+     var loginAlert = function() {
+       var alertPopup = $ionicPopup.alert({
+         title: 'Error',
+         template: 'Login failed. Please try again.'
+       });
+       alertPopup.then(function(res) {
+         console.log(msg);
+       });
+     };
+
+    var fbAuth = $firebaseAuth(fb);
+    $scope.login = function(username, password) {
+
+        fbAuth.$authWithPassword({
+            email: username,
+            password: password
+        }).then(function(authData) {
+            loading();
+            $state.go("tab.view");
+        }).catch(function(error) {
+           loginAlert();
+            console.error("ERROR: " + error);
+        });
+    }
+
+    $scope.register = function(username, password) {
+        fbAuth.$createUser({
+            email: username,
+             password: password
+         }).then(function(userData) {
+            return fbAuth.$authWithPassword({
+                email: username,
+                password: password
+            });
+        }).then(function(authData) {
+            loading();
+            $state.go("tab.view");
+        }).catch(function(error) {
+            regAlert();
+            console.error("ERROR: " + error);
+        });
+    }
+
+
+    $scope.logout = function (e) {
+       e.preventDefault();
+       fb.unauth();
+    }
+
+// Password strength
+    var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+
+    $scope.passwordStrength = {
+        "float": "left",
+        "width": "100px",
+        "height": "25px",
+        "margin-left": "5px"
+    };
+
+    $scope.analyze = function(value) {
+        if(strongRegex.test(value)) {
+            $scope.strength = "Strong password";
+            $scope.passwordStrength["background-color"] = "green";
+        } else if(mediumRegex.test(value)) {
+            $scope.strength = "Medium  password";
+
+            $scope.passwordStrength["background-color"] = "orange";
+        } else {
+            $scope.strength = "Weak Password";
+
+            $scope.passwordStrength["background-color"] = "red";
+        }
+        /*
+        if(strongRegex.test(value)) {
+            $scope.passwordStrength["background-color"] = "green";
+        } else if(mediumRegex.test(value)) {
+            $scope.passwordStrength["background-color"] = "orange";
+        } else {
+            $scope.passwordStrength["background-color"] = "red";
+        }
+        */
+    };
+
+});
+
+imageApp.controller("SecureController", function($scope, $ionicHistory, $firebaseArray, $ionicPopup, $cordovaCamera) {
+
+    $ionicHistory.clearHistory();
+
+    $scope.images = [];
+
+    var fbAuth = fb.getAuth();
+    if(fbAuth) {
+        var userReference = fb.child("users/" + fbAuth.uid);
+        var syncArray = $firebaseArray(userReference.child("images"));
+        $scope.images = syncArray;
+    } else {
+        $state.go("tab.login");
+    }
+
+
+
+
+    $scope.upload = function() {
         var options = {
             quality : 75,
             destinationType : Camera.DestinationType.DATA_URL,
             sourceType : Camera.PictureSourceType.CAMERA,
             allowEdit : true,
             encodingType: Camera.EncodingType.JPEG,
-            targetWidth: 300,
-            targetHeight: 300,
             popoverOptions: CameraPopoverOptions,
+            targetWidth: 500,
+            targetHeight: 500,
             saveToPhotoAlbum: false
         };
- 
         $cordovaCamera.getPicture(options).then(function(imageData) {
-            console.log("succesfully took a picture" );
-            $scope.imgURI = "data:image/jpeg;base64," + imageData;
-        }, function(err) {
-            // An error occured. Show a message to the user
-            console.log("Error while taking a picture");
+            var confirmPopup = $ionicPopup.confirm({
+                 title: 'Confirmation',
+                 template: 'Are you sure you want to upload the image?'
+               });
+               confirmPopup.then(function(res) {
+                 if(res) {
+                    syncArray.$add({image: imageData}).then(function() {
+                        alert("Image has been uploaded");
+                    });
+                   console.log('You are sure');
+                 } else {
+                    alert("Image not uploaded");
+                   console.log('You are not sure');
+                 }
+            });
+            
+        }, function(error) {
+            console.error(error);
         });
     }
 
- //check internet connection method
+//============= check internet connection method =================
   var checkConnection = function() {
         var networkState = navigator.connection.type;
         var states = {};
@@ -66,14 +252,15 @@ myService.controller("MasterController", function($scope, $cordovaCamera, $cordo
         states[Connection.CELL_4G]  = 'Cell 4G connection';
         states[Connection.CELL]     = 'Cell generic connection';
         states[Connection.NONE]     = 'No network connection';
-
+        information.connection = states[networkState];
         alert('Connection type: ' + states[networkState]);
-    }
+    };
 
-// Getting the geoLocation method
-    $scope.getLocation = function(){
+
+    //=============  Getting the geoLocation method ========================
+    var getLocation = function(){
       var onSuccess = function(position) {
-      alert('Latitude: '          + position.coords.latitude          + '\n' +
+      alert('Latitude: '        + position.coords.latitude          + '\n' +
           'Longitude: '         + position.coords.longitude         + '\n' +
           'Altitude: '          + position.coords.altitude          + '\n' +
           'Accuracy: '          + position.coords.accuracy          + '\n' +
@@ -85,176 +272,68 @@ myService.controller("MasterController", function($scope, $cordovaCamera, $cordo
       // onError Callback receives a PositionError object
       //
       function onError(error) {
-      alert('code: '    + error.code    + '\n' +
+          alert('code: '    + error.code    + '\n' +
           'message: ' + error.message + '\n');
       }
       navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    }
+    };
 
-//Capture Audio using native record 
- $scope.captureAudio = function(){
-    // capture callback
-    var captureSuccess = function(mediaFiles) {
-        var i, path, len;
-        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-            path = mediaFiles[i].fullPath;
-            // do something interesting with the file
+
+
+    //=======  Capture Audio using native record ==============
+       $scope.captureAudio = function(){
+          // capture callback
+          var captureSuccess = function(mediaFiles) {
+              var i, path, len;
+              for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                  path = mediaFiles[i].fullPath;
+                  // do something interesting with the file
+              }
+          };
+          // capture error callback
+          var captureError = function(error) {
+              navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+          };
+          // start audio capture
+          navigator.device.capture.captureAudio(captureSuccess, captureError, {limit:1});
         }
-    };
 
-    // capture error callback
-    var captureError = function(error) {
-        navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
-    };
 
-    // start audio capture
-    navigator.device.capture.captureAudio(captureSuccess, captureError, {limit:1});
-  }
+    //============ capture image and store in device storage ================
+        $scope.captureImage = function(){
+            // capture callback
+          var captureSuccess = function(mediaFiles) {
+              var i, path, len;
+              for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                  path = mediaFiles[i].fullPath;
+                  // do something interesting with the file
+              }
+              if(path)
+                  alert(path);
+          };
+          // capture error callback
+          var captureError = function(error) {
+              navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+          };
+          // start image capture
+          navigator.device.capture.captureImage(captureSuccess, captureError, {limit:1});
+        }
 
-//capture image and store in device storage
-$scope.captureImage = function(){
-    // capture callback
-  var captureSuccess = function(mediaFiles) {
-      var i, path, len;
-      for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-          path = mediaFiles[i].fullPath;
-          // do something interesting with the file
-
+    //========== Capture Video using native controller// capture callback ==========
+      $scope.captureVideo = function(){
+        var captureSuccess = function(mediaFiles) {
+            var i, path, len;
+            for (i = 0, len = mediaFiles.length; i < len; i += 1) {
+                path = mediaFiles[i].fullPath;
+                // do something interesting with the file
+            }
+        };
+        // capture error callback
+        var captureError = function(error) {
+            navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+        };
+        // start video capture
+        navigator.device.capture.captureVideo(captureSuccess, captureError, {limit:1});
       }
-      if(path)
-          alert(path);
-  };
 
-  // capture error callback
-  var captureError = function(error) {
-      navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
-  };
-
-  // start image capture
-  navigator.device.capture.captureImage(captureSuccess, captureError, {limit:2});
-
-}
-
-//Capture Video using native controller// capture callback
-  $scope.captureVideo = function(){
-    var captureSuccess = function(mediaFiles) {
-        var i, path, len;
-        for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-            path = mediaFiles[i].fullPath;
-            // do something interesting with the file
-        }
-    };
-
-    // capture error callback
-    var captureError = function(error) {
-        navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
-    };
-
-    // start video capture
-    navigator.device.capture.captureVideo(captureSuccess, captureError, {limit:1});
-  }
-
-/*
-    MediaError.MEDIA_ERR_ABORTED = 1
-    MediaError.MEDIA_ERR_NETWORK = 2
-    MediaError.MEDIA_ERR_DECODE = 3
-    MediaError.MEDIA_ERR_NONE_SUPPORTED = 4
-*/
-
-/*
-  //Recor audio
-    $scope.recordAudio = function () {
-        var src = "audio/myrecording.mp3";
-        var mediaRec = new Media(src,
-            // success callback
-            function() {
-                console.log("recordAudio():Audio Success");
-            },
-
-            // error callback
-            function(err) {
-                console.log("recordAudio():Audio Error: "+ err.code);
-            });
-
-        // Record audio
-        mediaRec.startRecord();
-    }
-
-    //define all your methods below this line
-
-    // Play audio
-    //This function works, you only need to pass a url then it will play an audio
-    $scope.playAudio=function (src) {
-        // Play the audio file at url
-        var my_media = new Media(src,
-            // success callback
-            function () {
-                console.log("playAudio():Audio Success");
-            },
-            // error callback
-            function (err) {
-                console.log("playAudio():Audio Error: " + err);
-            }
-        );
-        // Play audio
-        my_media.play();
-    }
-*/
 });
-
-
-/*
-  These are all the routes for the app. 
-  tabs, capture, login, about, are all views for the app
-  /tabs - is an abstract view at the bottom of the pages
-  /capture - is a view for capturing pde
-  /login - is a view for user login
-  /about - is a view for details about developers
-*/
-myService.config(function($stateProvider, $urlRouterProvider){
-  $stateProvider
-    .state('tabs',{
-        url:'/tab',
-        abstract:true,
-        templateUrl: 'templates/tabs.html'
-
-    })
-    .state('tabs.capture',{
-        url: '/capture',
-        views:{
-            'tabs-capture':{
-                templateUrl:'templates/capture.html',
-                controller:'MasterController'
-            }
-        }
-    })
-    .state('tabs.view',{
-        url:'/view',
-        views:{
-            'tabs-view':{
-                templateUrl:'templates/view.html',
-            }
-        }
-    })
-
-    .state('tabs.login',{
-        url:'/login',
-        views:{
-            'tabs-login':{
-                templateUrl:'templates/login.html',
-            }
-        }
-    })
-    
-    .state('tabs.register',{
-        url:'/register',
-        views:{
-            'tabs-login':{
-                templateUrl:'templates/register.html',
-            }
-        }
-    })
-    //This is a default view that will load when the app loads
-    $urlRouterProvider.otherwise('/tab/capture');
-});
-

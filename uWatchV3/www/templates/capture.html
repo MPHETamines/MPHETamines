@@ -1,20 +1,23 @@
-<iom-view>
-  <ion-header-bar class="bar-assertive">
-    <h1 class="title">Capture</h1>
+<ion-view title="Capture Evidence" ng-init="">
+  
+  <ion-header-bar class="bar-dark">
+    <div class="h1 title">Capture Evidence</div>
   </ion-header-bar>
 
-  <ion-content class="padding">
-    <img  ng-show="imgURI !== undefined" ng-src="{{imgURI}}">
-    <img  ng-show="imgURI === undefined" ng-src="img/placeholder.jpg">
-
-    <button class="button icon-left ion-ios-camera button-block button-energized" ng-click="takePicture()">
-      Picture
+  <ion-content class="padding has-subheader">
+    <button class="button icon-left ion-ios-camera button-block button-dark" ng-click="upload()">
+      Capture Image
     </button>
-    <button class="button icon-left ion-videocamera button-block button-energized" ng-click-"streamVideo()">
-      Video
+    <button class="button icon-left ion-videocamera button-block button-dark" ng-click="captureVideo()">
+      Capture Video
     </button>
-    <button class="button icon-left ion-ios-mic button-block button-energized">
-      Audio
-    </button>
+    <button class="button icon-left ion-ios-mic button-block button-dark" ng-click="captureAudio()">
+      Record Audio
+    </button> 
+    <!--
+    <button class="button icon-left ion-map  button-block button-dark" ng-click="getLocation()">
+      Check connection
+    </button> -->
   </ion-content>
+
 </ion-view>
