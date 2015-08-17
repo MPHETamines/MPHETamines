@@ -1,5 +1,0 @@
-C:\Users\herb-adventure\AndroidStudioProjects\Take_picture\app\build\intermediates\classes\debug
-C:\Users\herb-adventure\AndroidStudioProjects\Take_picture\app\build\intermediates\pre-dexed\debug\support-annotations-21.0.3-b67f9cc3a468d4f271d3040047da39de51fc5221.jar
-C:\Users\herb-adventure\AndroidStudioProjects\Take_picture\app\build\intermediates\pre-dexed\debug\internal_impl-21.0.3-094acaad351977b6a982141a33fd627c8cd34940.jar
-C:\Users\herb-adventure\AndroidStudioProjects\Take_picture\app\build\intermediates\pre-dexed\debug\classes-727abe9bb5e84d4a0aecd16929b8a117d508ddfa.jar
-C:\Users\herb-adventure\AndroidStudioProjects\Take_picture\app\build\intermediates\pre-dexed\debug\classes-6760f575d4e1dddf8c386dd15c862d2abc9ab902.jar
