@@ -1,7 +1,7 @@
-CLICK <a href="http://www.burndown.io/#MPHETamines/MPHETamines/summary"> HERE </a> TO VIEW BURNDOWN CHART 
-CLICK <a href="https://waffle.io/MPHETamines/MPHETamines"> HERE </a> TO VIEW SCRUM BOARD 
+CLICK <a href="http://www.burndown.io/#MPHETamines/MPHETamines/summary"> HERE </a> TO VIEW BURNDOWN CHART <br/>
+CLICK <a href="https://waffle.io/MPHETamines/MPHETamines"> HERE </a> TO VIEW SCRUM BOARD <br/>
 
-#Group Name: MPHETamines
+#Group Name: MPHETamines<br/>
 #Group Members: <br/>
 Taariq Ghoord 10132806<br/>
 Martha Mohlala 10353403 <br/>
