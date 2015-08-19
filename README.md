@@ -1,3 +1,6 @@
+CLICK HERE TO VIEW BURNDOWN CHART : http://www.burndown.io/#MPHETamines/MPHETamines/summary
+CLICK HERE TO VIEW SCRUM BOARD : https://waffle.io/MPHETamines/MPHETamines
+
 
 #Group Name: MPHETamines
 Taariq Ghoord 10132806
