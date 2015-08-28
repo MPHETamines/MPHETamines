@@ -5,55 +5,57 @@
   /tabs - is an abstract view at the bottom of the pages
   /capture - is a view for capturing pde
   /login - is a view for user login
-  /about - is a view for details about developers
+  /register - is a view for user register
 */
-myService.config(function($stateProvider, $urlRouterProvider){
-  $stateProvider
-    .state('tabs',{
-        url:'/tab',
-        abstract:true,
-        templateUrl: 'templates/tabs.html'
 
-    })
-    .state('tabs.capture',{
-        url: '/capture',
-        views:{
-            'tabs-capture':{
-                templateUrl:'templates/capture.html',
-                controller:'MasterController'
+uwatch.config(function($stateProvider, $urlRouterProvider) {
+    $stateProvider
+        .state('tab',{
+            url:'/tabs',
+            abstract:true,
+            templateUrl: 'templates/tabs.html',
+            catche:false
+            
+        })
+        .state('tab.login',{
+            url: '/login',
+            views:{
+                'tabs-login':{
+                    templateUrl:'templates/login.html',
+                    controller:'LoginController',
+                    catche:false
+                }
             }
-        }
-    })
-    .state('tabs.view',{
-        url:'/view',
-        views:{
-            'tabs-view':{
-                templateUrl:'templates/view.html',
-                controller:"MasterController"
+        })
+        .state('tab.register',{
+            url: '/login/:register',
+            views:{
+                'tabs-login':{
+                    templateUrl:'templates/register.html',
+                    controller:'LoginController',
+                    catche:false
+                }
             }
-        }
-    })
+        })
 
-    .state('tabs.login',{
-        url:'/login',
-        views:{
-            'tabs-login':{
-                templateUrl:'templates/login.html',
-                controller: 'MasterController'
+        .state('tab.view',{
+            url: '/view',
+            views:{
+                'tabs-view':{
+                    templateUrl:'templates/view.html',
+                    controller:'CaptureController'
+                }
             }
-        }
-    })
-    
-    .state('tabs.register',{
-        url:'/register',
-        views:{
-            'tabs-login':{
-                templateUrl:'templates/register.html',
-                controller:'MasterController'
+        })
+        .state('tab.capture',{
+            url: '/capture',
+            views:{
+                'tabs-capture':{
+                    templateUrl:'templates/capture.html',
+                    controller:'CaptureController'
+                }
             }
-        }
-    })
-    //This is a default view that will load when the app loads
-    $urlRouterProvider.otherwise('/tab/capture');
+        });
+
+    $urlRouterProvider.otherwise('/tabs/login');
 });
-

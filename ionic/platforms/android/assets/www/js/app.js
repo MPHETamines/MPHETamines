@@ -17,63 +17,29 @@ uwatch.run(function($ionicPlatform) {
       checkConnection(); //check type of connection
       getLocation() //for demonstration purpose
     }
+
+
+        var networkState = navigator.connection.type;
+        var states = {};
+        states[Connection.UNKNOWN]  = 'Unknown connection';
+        states[Connection.ETHERNET] = 'Ethernet connection';
+        states[Connection.WIFI]     = 'WiFi connection';
+        states[Connection.CELL_2G]  = 'Cell 2G connection';
+        states[Connection.CELL_3G]  = 'Cell 3G connection';
+        states[Connection.CELL_4G]  = 'Cell 4G connection';
+        states[Connection.CELL]     = 'Cell generic connection';
+        states[Connection.NONE]     = 'No network connection';
+        information.connection = states[networkState];
+        alert('Connection type: ' + states[networkState]);
+
+
+
+    //=============  Getting the geoLocation method ========================
+
   });
 });
 
-uwatch.config(function($stateProvider, $urlRouterProvider) {
-    $stateProvider
-        .state('tab',{
-            url:'/tabs',
-            abstract:true,
-            templateUrl: 'templates/tabs.html',
-            catche:false
-            
-        })
-        .state('tab.login',{
-            url: '/login',
-            views:{
-                'tabs-login':{
-                    templateUrl:'templates/login.html',
-                    controller:'LoginController',
-                    catche:false
-                }
-            }
-        })
-        .state('tab.register',{
-            url: '/login/:register',
-            views:{
-                'tabs-login':{
-                    templateUrl:'templates/register.html',
-                    controller:'LoginController',
-                    catche:false
-                }
-            }
-        })
-
-        .state('tab.view',{
-            url: '/view',
-            views:{
-                'tabs-view':{
-                    templateUrl:'templates/view.html',
-                    controller:'CaptureController'
-                }
-            }
-        })
-        .state('tab.capture',{
-            url: '/capture',
-            views:{
-                'tabs-capture':{
-                    templateUrl:'templates/capture.html',
-                    controller:'CaptureController'
-                }
-            }
-        });
-
-    $urlRouterProvider.otherwise('/tabs/login');
-});
-
 uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $ionicLoading, $ionicPopup, $timeout) {
-
 
     var loading = function(){
       // Setup the loader
@@ -113,9 +79,10 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
             loading();
             $state.go("tab.view");
         }).catch(function(error) {
-            alertError("Username not registe");
+            alertError("Username not registered");
             console.error("ERROR: " + error);
         });
+
     };
 
     $scope.firebaseRegister = function(username, password, cpassword) {
@@ -136,7 +103,7 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
             loading();
             $state.go("tab.view");
         }).catch(function(error) {
-            alertError("error");
+            alertError(error);
             console.error("ERROR: " + error);
         });
       }
@@ -243,11 +210,9 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
        $scope.captureAudio = function(){
           // capture callback
           var captureSuccess = function(mediaFiles) {
-              var i, path, len;
-              for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                  path = mediaFiles[i].fullPath;
+
+             var path = mediaFiles[0].fullPath; //we are only capturing one pde at a time
                   // do something interesting with the file
-              }
           };
           // capture error callback
           var captureError = function(error) {
@@ -262,13 +227,8 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
         $scope.captureImage = function(){
             // capture callback
           var captureSuccess = function(mediaFiles) {
-              var i, path, len;
-              for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                  path = mediaFiles[i].fullPath;
+             var path = mediaFiles[0].fullPath; //we are only capturing one pde at a time
                   // do something interesting with the file
-              }
-              if(path)
-                  alert(path);
           };
           // capture error callback
           var captureError = function(error) {
@@ -281,11 +241,8 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
     //========== Capture Video using native controller// capture callback ==========
       $scope.captureVideo = function(){
         var captureSuccess = function(mediaFiles) {
-            var i, path, len;
-            for (i = 0, len = mediaFiles.length; i < len; i += 1) {
-                path = mediaFiles[i].fullPath;
-                // do something interesting with the file
-            }
+           var path = mediaFiles[0].fullPath; //we are only capturing one pde at a time
+                  // do something interesting with the file
         };
         // capture error callback
         var captureError = function(error) {
