@@ -1,13 +1,8 @@
-// Ionic Starter App
-
-// angular.module is a global place for creating, registering and retrieving Angular modules
-// 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
-// the 2nd parameter is an array of 'requires'
-//var myService = angular.module('starter', ['ionic','ngCordova'])
-var imageApp = angular.module("starter", ["ionic", "ngCordova","firebase"]);
+//inject any dependancies here
+var uwatch = angular.module("uwatch", ["ionic", "ngCordova","firebase"]);
 var fb = new Firebase("https://torrid-heat-8946.firebaseio.com/");
 
-imageApp.run(function($ionicPlatform) {
+uwatch.run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -25,7 +20,7 @@ imageApp.run(function($ionicPlatform) {
   });
 });
 
-imageApp.config(function($stateProvider, $urlRouterProvider) {
+uwatch.config(function($stateProvider, $urlRouterProvider) {
     $stateProvider
         .state('tab',{
             url:'/tabs',
@@ -39,17 +34,28 @@ imageApp.config(function($stateProvider, $urlRouterProvider) {
             views:{
                 'tabs-login':{
                     templateUrl:'templates/login.html',
-                    controller:'FirebaseController',
+                    controller:'LoginController',
                     catche:false
                 }
             }
         })
+        .state('tab.register',{
+            url: '/login/:register',
+            views:{
+                'tabs-login':{
+                    templateUrl:'templates/register.html',
+                    controller:'LoginController',
+                    catche:false
+                }
+            }
+        })
+
         .state('tab.view',{
             url: '/view',
             views:{
                 'tabs-view':{
                     templateUrl:'templates/view.html',
-                    controller:'SecureController'
+                    controller:'CaptureController'
                 }
             }
         })
@@ -58,7 +64,7 @@ imageApp.config(function($stateProvider, $urlRouterProvider) {
             views:{
                 'tabs-capture':{
                     templateUrl:'templates/capture.html',
-                    controller:'SecureController'
+                    controller:'CaptureController'
                 }
             }
         });
@@ -66,7 +72,7 @@ imageApp.config(function($stateProvider, $urlRouterProvider) {
     $urlRouterProvider.otherwise('/tabs/login');
 });
 
-imageApp.controller("FirebaseController", function($scope, $state, $firebaseAuth, $ionicLoading, $ionicPopup, $timeout) {
+uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $ionicLoading, $ionicPopup, $timeout) {
 
 
     var loading = function(){
@@ -84,36 +90,21 @@ imageApp.controller("FirebaseController", function($scope, $state, $firebaseAuth
             $ionicLoading.hide();
           }, 3000);
           
-    }
+    };
 
-
-
-    // An alert dialog
-     var regAlert = function() {
+     var alertError = function(errMsg) {
        var alertPopup = $ionicPopup.alert({
          title: 'Error',
-         template: 'The email address provided is not registered.'
+         template: errMsg
        });
        alertPopup.then(function(res) {
          console.log(msg);
        });
      };
 
-
-
-    // An alert dialog
-     var loginAlert = function() {
-       var alertPopup = $ionicPopup.alert({
-         title: 'Error',
-         template: 'Login failed. Please try again.'
-       });
-       alertPopup.then(function(res) {
-         console.log(msg);
-       });
-     };
 
     var fbAuth = $firebaseAuth(fb);
-    $scope.login = function(username, password) {
+    $scope.firebaseLogin = function(username, password) {
 
         fbAuth.$authWithPassword({
             email: username,
@@ -122,12 +113,18 @@ imageApp.controller("FirebaseController", function($scope, $state, $firebaseAuth
             loading();
             $state.go("tab.view");
         }).catch(function(error) {
-           loginAlert();
+            alertError("Username not registered");
             console.error("ERROR: " + error);
         });
-    }
 
-    $scope.register = function(username, password) {
+    };
+
+    $scope.firebaseRegister = function(username, password, cpassword) {
+      if(password !== cpassword){
+        alertError("Password does not match");
+        $state.go("tab.register");
+      }
+      else{
         fbAuth.$createUser({
             email: username,
              password: password
@@ -140,55 +137,53 @@ imageApp.controller("FirebaseController", function($scope, $state, $firebaseAuth
             loading();
             $state.go("tab.view");
         }).catch(function(error) {
-            regAlert();
+            alertError(error);
             console.error("ERROR: " + error);
         });
-    }
+      }
 
+    };
 
-    $scope.logout = function (e) {
-       e.preventDefault();
-       fb.unauth();
-    }
-
-// Password strength
+    // Password strength
     var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
     var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
 
     $scope.passwordStrength = {
-        "float": "left",
-        "width": "100px",
-        "height": "25px",
-        "margin-left": "5px"
+        //css will be added dynamically
     };
 
+
+    //checks password strength
     $scope.analyze = function(value) {
         if(strongRegex.test(value)) {
             $scope.strength = "Strong password";
             $scope.passwordStrength["background-color"] = "green";
-        } else if(mediumRegex.test(value)) {
+        }
+        else if(mediumRegex.test(value)) {
             $scope.strength = "Medium  password";
-
             $scope.passwordStrength["background-color"] = "orange";
-        } else {
+        }
+        else {
             $scope.strength = "Weak Password";
+            $scope.passwordStrength["background-color"] = "red";
+        }
 
+    };
+    //checks passwords match
+    $scope.analyzeMatch = function(pass, cpass) {
+        if(pass != cpass) {
+            $scope.strength = "Password does not macth";
             $scope.passwordStrength["background-color"] = "red";
         }
-        /*
-        if(strongRegex.test(value)) {
+        else {
+            $scope.strength = "Passwords match";
             $scope.passwordStrength["background-color"] = "green";
-        } else if(mediumRegex.test(value)) {
-            $scope.passwordStrength["background-color"] = "orange";
-        } else {
-            $scope.passwordStrength["background-color"] = "red";
         }
-        */
     };
 
 });
 
-imageApp.controller("SecureController", function($scope, $ionicHistory, $firebaseArray, $ionicPopup, $cordovaCamera) {
+uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebaseArray, $ionicPopup, $cordovaCamera) {
 
     $ionicHistory.clearHistory();
 
@@ -199,46 +194,11 @@ imageApp.controller("SecureController", function($scope, $ionicHistory, $firebas
         var userReference = fb.child("users/" + fbAuth.uid);
         var syncArray = $firebaseArray(userReference.child("images"));
         $scope.images = syncArray;
-    } else {
+    } 
+    /*else {
         $state.go("tab.login");
-    }
+    }*/
 
-
-
-
-    $scope.upload = function() {
-        var options = {
-            quality : 75,
-            destinationType : Camera.DestinationType.DATA_URL,
-            sourceType : Camera.PictureSourceType.CAMERA,
-            allowEdit : true,
-            encodingType: Camera.EncodingType.JPEG,
-            popoverOptions: CameraPopoverOptions,
-            targetWidth: 500,
-            targetHeight: 500,
-            saveToPhotoAlbum: false
-        };
-        $cordovaCamera.getPicture(options).then(function(imageData) {
-            var confirmPopup = $ionicPopup.confirm({
-                 title: 'Confirmation',
-                 template: 'Are you sure you want to upload the image?'
-               });
-               confirmPopup.then(function(res) {
-                 if(res) {
-                    syncArray.$add({image: imageData}).then(function() {
-                        alert("Image has been uploaded");
-                    });
-                   console.log('You are sure');
-                 } else {
-                    alert("Image not uploaded");
-                   console.log('You are not sure');
-                 }
-            });
-            
-        }, function(error) {
-            console.error(error);
-        });
-    }
 
 //============= check internet connection method =================
   var checkConnection = function() {
@@ -296,7 +256,7 @@ imageApp.controller("SecureController", function($scope, $ionicHistory, $firebas
           };
           // start audio capture
           navigator.device.capture.captureAudio(captureSuccess, captureError, {limit:1});
-        }
+        };
 
 
     //============ capture image and store in device storage ================
@@ -317,7 +277,7 @@ imageApp.controller("SecureController", function($scope, $ionicHistory, $firebas
           };
           // start image capture
           navigator.device.capture.captureImage(captureSuccess, captureError, {limit:1});
-        }
+        };
 
     //========== Capture Video using native controller// capture callback ==========
       $scope.captureVideo = function(){
@@ -334,6 +294,43 @@ imageApp.controller("SecureController", function($scope, $ionicHistory, $firebas
         };
         // start video capture
         navigator.device.capture.captureVideo(captureSuccess, captureError, {limit:1});
-      }
+      };
 
 });
+
+/*
+    $scope.upload = function() {
+        var options = {
+            quality : 75,
+            destinationType : Camera.DestinationType.DATA_URL,
+            sourceType : Camera.PictureSourceType.CAMERA,
+            allowEdit : true,
+            encodingType: Camera.EncodingType.JPEG,
+            popoverOptions: CameraPopoverOptions,
+            targetWidth: 500,
+            targetHeight: 500,
+            saveToPhotoAlbum: false
+        };
+        $cordovaCamera.getPicture(options).then(function(imageData) {
+            var confirmPopup = $ionicPopup.confirm({
+                 title: 'Confirmation',
+                 template: 'Are you sure you want to upload the image?'
+               });
+               confirmPopup.then(function(res) {
+                 if(res) {
+                    syncArray.$add({image: imageData}).then(function() {
+                        alert("Image has been uploaded");
+                    });
+                   console.log('You are sure');
+                 } else {
+                    alert("Image not uploaded");
+                   console.log('You are not sure');
+                 }
+            });
+            
+        }, function(error) {
+            console.error(error);
+        });
+    }
+
+*/
