@@ -13,6 +13,7 @@
 
 \LARGE\textbf{Group Name:} MPHETamines\newline
  
+\LARGE\textbf{Version:} 1.2\newline
  
  
  
@@ -107,11 +108,61 @@ We used Firebase as our persistent infrastructure to store the uploaded media, i
 			\item The system must be easy to use.
 			\item The user must be satisfied by the system.
 		\end{itemize}
+	\item Maintainability
+		\begin{itemize}
+			\item System must be easy to be tested, updated and changed if needed.
+		\end{itemize}
 	\item Deployability(important)
 		\begin{itemize}
 			\item The system is deployed into cross platforms.
 		\end{itemize}
 	\end{itemize}
+\subsection{How we intend to achieve Quality requirements}
+\begin{itemize}
+\item Security
+	\begin{itemize}
+		\item Access control: We have our own access control where registering users have different level of privileges. First of all,user has to login to view what he/she has uploaded and users can only view what they have uploaded. Law enforcement on the other hand, has privileges to view and download any pde uploaded by any user.
+		\item 2 factor authentication - Every user has to confirm hi/her email address for him/her to be successfully registered.
+		\item Hashing: We implement sha256 hash algorithm were we hash users passwords and links to pde before they are send to a cloud. 
+		\item Encryption: We implement AES encryption algorithm. We encrypt users passwords and links to pde before the pde is sent to a cloud. 
+		\item SSL: we use secure layers to connect to the database to ensure extra communication security when sending data and receiving it from the cloud and database.
+	\end{itemize}
+\item Scalability
+	\begin{itemize}
+		\item Data storage: We use both the database and the cloud to even up the load. We store users information in the database and user's pde files in the cloud and save the link of those large files in the database. This simplifies database structure and increases performance since the large data files are not queried to/from the database but only the partial link of the file is stored in the database and the file itself is stored in cloud. Every user has a related to a list of links of pde files he/she uploaded on our system. 
+	\end{itemize}
+\item Reliability
+	\begin{itemize}
+		\item Testing: We are using tested plugins from ngCordova repository to access device's camera, audio and video options. The plugins have been tested and we also do our own integration tests to ensure that the plugins work well with no conflicts.
+		\item Exception handling: We catch all our exceptions to ensure that the system behaves as intended.
+		\item Fault tolerance: A copy of the pde file is kept in our system cache until it is successfully uploaded to the cloud, in case there is a connection error while a user tries to upload the pde file. If there is an error, the cached pde file will be resend.  
+	\end{itemize}
+\item Integrability
+	\begin{itemize}
+		\item Our system is integrated with google map api to decode the longitude and latitude values we get from user's device location to human-readable address.
+		\item Cloud: We integrate mysql database with google firebase cloud to save large files on the cloud and links to those files on the database.
+		\item Plugins: We integrate media plugins to access device's camera, audio and video controls with encryption and hashing algorithms. 
+	\end{itemize}
+\item Performance
+	\begin{itemize}
+		\item Cloud and Database: We separated user details from large files users upload to increase performance and to structure our data well.
+	\end{itemize}
+\item Usability
+	\begin{itemize}
+		\item Ionic framework build hybrid apps that uses native device's controls, meaning users enjoy the feel of using an app that is build with native language on any device the user will be using our system on. The button, forms and checkboxes feel as if they were build from native languages on both android and ios devices, meaning users will ship their knowledge of using the device and making it easier for users to adapt and learn to use the system quicker.
+		\item Icon: We use visuals such as icons for users who can not even read to be able to still use the system because of the visuals on the buttons.
+		\item Colors: We use colors to show users the quality and strength of their passwords, making them to enter the right secure password from the start.
+	\end{itemize}
+\item Maintainability
+	\begin{itemize}
+		\item MVC: We use MVC design pattern to separate the view from the controller and the model. This helps us modularize our system and make it easy to maintain and test it. 
+		\item State pattern: Every view has it's state and depending on the state, a relevant page loads, this simplifies page linking and makes it easy to load any page dynamically depending on the stage of the current page or on which button pressed.   
+	\end{itemize}
+\item Deployability
+	\begin{itemize}
+		\item We are building a hybrid system that can be deployed in almost all the platforms. We are focusing on Android, Ios and windows mobile devices because of the higher percentage in the use of these devices. This also reduces the quirks of different devices and ensures reliability on every device and high performance.  
+	\end{itemize}
+\end{itemize}
 \subsection{Integration and access channel requirements}
 The system will be accessed using Mobile/Android Applications clients through the use of ngCordova,  browser clients which is where ionic's web based framework comes in and web services clients.
 \subsection{Architectural constraints}

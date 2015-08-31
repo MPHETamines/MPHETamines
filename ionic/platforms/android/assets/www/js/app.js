@@ -13,28 +13,6 @@ uwatch.run(function($ionicPlatform) {
     if(window.StatusBar) {
       StatusBar.styleDefault();
     }   
-    if(window.Connection){ //check if connection plugin is installed
-      checkConnection(); //check type of connection
-      getLocation() //for demonstration purpose
-    }
-
-
-        var networkState = navigator.connection.type;
-        var states = {};
-        states[Connection.UNKNOWN]  = 'Unknown connection';
-        states[Connection.ETHERNET] = 'Ethernet connection';
-        states[Connection.WIFI]     = 'WiFi connection';
-        states[Connection.CELL_2G]  = 'Cell 2G connection';
-        states[Connection.CELL_3G]  = 'Cell 3G connection';
-        states[Connection.CELL_4G]  = 'Cell 4G connection';
-        states[Connection.CELL]     = 'Cell generic connection';
-        states[Connection.NONE]     = 'No network connection';
-        information.connection = states[networkState];
-        alert('Connection type: ' + states[networkState]);
-
-
-
-    //=============  Getting the geoLocation method ========================
 
   });
 });
@@ -71,7 +49,6 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
 
     var fbAuth = $firebaseAuth(fb);
     $scope.firebaseLogin = function(username, password) {
-
         fbAuth.$authWithPassword({
             email: username,
             password: password
@@ -129,6 +106,10 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
             $scope.strength = "Medium  password";
             $scope.passwordStrength["background-color"] = "orange";
         }
+        else if(value == "" || value == undefined){
+            $scope.strength = "";
+            $scope.passwordStrength["background-color"] = "#fff";
+        }
         else {
             $scope.strength = "Weak Password";
             $scope.passwordStrength["background-color"] = "red";
@@ -167,7 +148,7 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
 
 
 //============= check internet connection method =================
-  var checkConnection = function() {
+  $scope.checkConnection = function() {
         var networkState = navigator.connection.type;
         var states = {};
         states[Connection.UNKNOWN]  = 'Unknown connection';
@@ -184,7 +165,7 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
 
 
     //=============  Getting the geoLocation method ========================
-    var getLocation = function(){
+    $scope.getLocation = function(){
       var onSuccess = function(position) {
       alert('Latitude: '        + position.coords.latitude          + '\n' +
           'Longitude: '         + position.coords.longitude         + '\n' +
@@ -201,26 +182,28 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
           alert('code: '    + error.code    + '\n' +
           'message: ' + error.message + '\n');
       }
+      
       navigator.geolocation.getCurrentPosition(onSuccess, onError);
     };
 
 
 
-    //=======  Capture Audio using native record ==============
-       $scope.captureAudio = function(){
-          // capture callback
-          var captureSuccess = function(mediaFiles) {
+  //=======  Capture Audio using native record ==============
+     $scope.captureAudio = function(){
 
-             var path = mediaFiles[0].fullPath; //we are only capturing one pde at a time
-                  // do something interesting with the file
-          };
-          // capture error callback
-          var captureError = function(error) {
-              navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
-          };
-          // start audio capture
-          navigator.device.capture.captureAudio(captureSuccess, captureError, {limit:1});
+        // if capture succeeds
+        var captureSuccess = function(mediaFiles) {
+           var path = mediaFiles[0].fullPath; //we are only capturing one pde at a time
+                // do something interesting with the file
         };
+        // if capture fails
+        var captureError = function(error) {
+            navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
+        };
+        
+        // call to capture audio function 
+        navigator.device.capture.captureAudio(captureSuccess, captureError, {limit:1});
+      };
 
 
     //============ capture image and store in device storage ================
