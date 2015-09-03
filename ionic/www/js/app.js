@@ -49,6 +49,10 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
 
     var fbAuth = $firebaseAuth(fb);
     $scope.firebaseLogin = function(username, password) {
+      //var uname=sha512_256(username);
+      //var pword=sha512_256(password);
+      //alert("phephe"+pword);
+      //hashed values to be re-hashed and see if they match with hashed values in database
         fbAuth.$authWithPassword({
             email: username,
             password: password
@@ -63,6 +67,10 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
     };
 
     $scope.firebaseRegister = function(username, password, cpassword) {
+      //var uname=sha512_256(username);
+      //var pword=sha512_256(password);
+      //var pword = CryptoJS.SHA256(password);
+      //alert("hadhed password value"+pword);
       if(password !== cpassword){
         alertError("Password does not match");
         $state.go("tab.register");
