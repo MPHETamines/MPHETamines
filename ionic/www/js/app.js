@@ -42,7 +42,7 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
          template: errMsg
        });
        alertPopup.then(function(res) {
-         console.log(msg);
+         console.log(errMsg);
        });
      };
 
@@ -220,6 +220,7 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
           var captureSuccess = function(mediaFiles) {
              var path = mediaFiles[0].fullPath; //we are only capturing one pde at a time
                   // do something interesting with the file
+                  alert(" asdf"+mediaFiles);
           };
           // capture error callback
           var captureError = function(error) {
