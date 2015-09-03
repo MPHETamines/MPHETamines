@@ -1,27 +1,29 @@
-<ion-view>
-	<ion-header-bar class="bar-assertive ">
-		<h1 class="title">Register</h1>
-	</ion-header-bar>
-	<ion-content>
-		<div class="card list-inset" >
-			<label class="item item-input">
-				<input type="text" placeholder="Your Name">
-			</label>
-			<label class="item item-input">
-				<input type="text" placeholder="First Name">
-			</label>
-			<label class="item item-input">
-				<input type="email" placeholder="Email address">
-			</label>	
-			<label class="item item-input">
-				<input type="password" placeholder="Password">
-			</label>
-			<label class="item item-input">
-				<input type="password" placeholder="Confirm password">
-			</label>
-		</div>
-	<a class="button button-assertive button-block icon-right ion-checkmark" ng-click="">Register</a>
-	<a class="button button-stable button-block icon-right ion-checkmark" href="#/tab/login">Already have an account</a>
+<ion-view title="Register">
 
-	</ion-content>
+  <ion-header-bar class="bar-dark">
+    <div class="h1 title">Register</div>
+  </ion-header-bar>
+
+    <ion-content>
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input ng-model="email" type="email" required placeholder="Email address" />
+            </label>
+            <label class="item item-input">
+                <input ng-model="password" type="password" required ng-change="analyze(password)"  placeholder="Password" />
+            </label>
+            <label class="item item-input">
+                <input ng-model="cpassword" type="password" required ng-change="analyzeMatch(password,cpassword)"  placeholder="Confirm password" />
+            </label>
+        </div>
+
+        <div class="padding-left padding-right">
+            <div class="button-bar">
+                <a class="button" ng-click="firebaseRegister(email, password, cpassword)">Register</a>
+                <a class="button" href="#/tabs/login">Login</a>
+            </div>
+     
+            <div class="list list-inset padding padding-bottom" ng-style="passwordStrength">{{strength}}</div> 
+        </div>
+    </ion-content>
 </ion-view>

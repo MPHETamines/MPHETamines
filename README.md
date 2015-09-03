@@ -1,10 +1,13 @@
+CLICK <a href="http://www.burndown.io/#MPHETamines/MPHETamines/summary"> HERE </a> TO VIEW BURNDOWN CHART <br/>
+CLICK <a href="https://waffle.io/MPHETamines/MPHETamines"> HERE </a> TO VIEW SCRUM BOARD <br/>
 
-#Group Name: MPHETamines
-Taariq Ghoord 10132806
-Martha Mohlala 10353403
-Phethile Mkhabela 12097561
-Sboniso Masilela10416260
-Harrison Maphuti Setati 12310043
+#Group Name: MPHETamines<br/>
+#Group Members: <br/>
+Taariq Ghoord 10132806<br/>
+Martha Mohlala 10353403 <br/>
+Phethile Mkhabela 12097561 <br/>
+Sboniso Masilela10416260<br/>
+Harrison Maphuti Setati 12310043<br/>
 
 
 #Project Background
