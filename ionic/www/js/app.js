@@ -69,6 +69,7 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
     $scope.firebaseRegister = function(username, password, cpassword) {
       //var uname=sha512_256(username);
       //var pword=sha512_256(password);
+      //var pword = CryptoJS.SHA256(password);
       //alert("hadhed password value"+pword);
       if(password !== cpassword){
         alertError("Password does not match");
