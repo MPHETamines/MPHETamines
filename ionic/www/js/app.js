@@ -217,12 +217,15 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
     //============ capture image and store in device storage ================
         $scope.captureImage = function(){
             // capture callback
+            alert("in fuction capture");
           var captureSuccess = function(mediaFiles) {
+            alert("in success case");
              var path = mediaFiles[0].fullPath; //we are only capturing one pde at a time
                   // do something interesting with the file
           };
           // capture error callback
           var captureError = function(error) {
+            alert("in error case");
               navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
           };
           // start image capture
