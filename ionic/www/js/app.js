@@ -220,10 +220,11 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
           var captureSuccess = function(mediaFiles) {
              var path = mediaFiles[0].fullPath; //we are only capturing one pde at a time
                   // do something interesting with the file
-                  alert(" asdf"+mediaFiles);
+                  alert("in success zone");
           };
           // capture error callback
           var captureError = function(error) {
+            alert("in error zone");
               navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
           };
           // start image capture
