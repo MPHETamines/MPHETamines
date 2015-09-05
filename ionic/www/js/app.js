@@ -172,6 +172,15 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
     };
 
 
+    //======= Getting timestamp method====
+  $scope.getTimestamp = function() {
+
+    var date = new Date();
+  //var dateObject = date.getFullYear() +'/'+ ('0' + (date.getMonth() + 1)).slice(-2) +'/'+ ('0' + date.getDate()).slice(-2);
+    alert(date.getFullYear() +'/'+ ('0' + (date.getMonth() + 1)).slice(-2) +'/'+ ('0' + date.getDate()).slice(-2) + " " + date.getHours() + ":" + date.getMinutes());
+};
+
+
     //=============  Getting the geoLocation method ========================
     $scope.getLocation = function(){
       /*var onSuccess = function(position) {
@@ -193,11 +202,11 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
       
       navigator.geolocation.getCurrentPosition(onSuccess, onError);*/
       if(!navigator.geolocation) 
-  {
-      return;
-  } 
+      {
+          return;
+      } 
   
-  navigator.geolocation.getCurrentPosition(function(pos) {
+    navigator.geolocation.getCurrentPosition(function(pos) {
     geocoder = new google.maps.Geocoder();
     var infowindow = new google.maps.InfoWindow;
     var latlng = new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
@@ -247,23 +256,6 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
     
  };
 
-$scope.getTimestamp = function() {
-  /*var onSuccess = function(position){
-  var date = new Date(position.timestamp * 1000);
-  var dateObject = date.getFullYear() +'/'+ ('0' + (date.getMonth() + 1)).slice(-2) +'/'+ ('0' + date.getDate()).slice(-2);
-  alert(date.getFullYear() +'/'+ ('0' + (date.getMonth() + 1)).slice(-2) +'/'+ ('0' + date.getDate()).slice(-2));*/
-
-  if (!Date.now) {
-    Date.now = function() { 
-      return new Date().getTime(); 
-    }
-    var n = Math.floor(Date.now() / 1000);
-
-    alert('timestamp' + n);
-  }
-  
-
-};
 
   //=======  Capture Audio using native record ==============
      $scope.captureAudio = function(){
