@@ -58,7 +58,7 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
             password: password
         }).then(function(authData) {
             loading();
-            $state.go("tab.view");
+            $state.go("tab.capture");
         }).catch(function(error) {
             alertError("Username not registered");
             console.error("ERROR: " + error);
@@ -86,7 +86,7 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
             });
         }).then(function(authData) {
             loading();
-            $state.go("tab.view");
+            $state.go("tab.authenticate");
         }).catch(function(error) {
             alertError(error);
             console.error("ERROR: " + error);
@@ -172,9 +172,18 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
     };
 
 
+    //======= Getting timestamp method====
+  $scope.getTimestamp = function() {
+
+    var date = new Date();
+  //var dateObject = date.getFullYear() +'/'+ ('0' + (date.getMonth() + 1)).slice(-2) +'/'+ ('0' + date.getDate()).slice(-2);
+    alert(date.getFullYear() +'/'+ ('0' + (date.getMonth() + 1)).slice(-2) +'/'+ ('0' + date.getDate()).slice(-2) + " " + date.getHours() + ":" + date.getMinutes());
+};
+
+
     //=============  Getting the geoLocation method ========================
     $scope.getLocation = function(){
-      var onSuccess = function(position) {
+      /*var onSuccess = function(position) {
       alert('Latitude: '        + position.coords.latitude          + '\n' +
           'Longitude: '         + position.coords.longitude         + '\n' +
           'Altitude: '          + position.coords.altitude          + '\n' +
@@ -191,9 +200,61 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
           'message: ' + error.message + '\n');
       }
       
-      navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    };
-
+      navigator.geolocation.getCurrentPosition(onSuccess, onError);*/
+      if(!navigator.geolocation) 
+      {
+          return;
+      } 
+  
+    navigator.geolocation.getCurrentPosition(function(pos) {
+    geocoder = new google.maps.Geocoder();
+    var infowindow = new google.maps.InfoWindow;
+    var latlng = new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
+    
+    geocoder.geocode({'latLng': latlng}, function(results, status) 
+    {
+      if (status == google.maps.GeocoderStatus.OK) 
+      {
+        /*if (results[0]) 
+        {
+          var arrAddress = results[0].address_components;
+          // iterate through address_component array
+          $.each(arrAddress, function (i, address_component)
+            {
+            if (address_component.types[0] == "locality") 
+            {
+              console.log(address_component.long_name); // city
+              alert(address_component.long_name);
+              return false; // break
+            }
+          });
+        } 
+        else 
+        {
+          alert("No results found");
+        }*/
+      
+      if (results[1]) {
+        var marker = new google.maps.Marker({
+        position: latlng});
+        infowindow.setContent(results[1].formatted_address);
+        var actualLocation = results[1].formatted_address;
+      
+        alert(actualLocation);
+      } 
+      else 
+      {
+        alert("Geocoder failed due to: " + status);
+      }
+    }
+    });
+  });
+  
+  var onGetCurrentPositionError = function(error) { 
+    console.log("Couldn't get geo coords from device");
+  } 
+    
+ };
 
 
   //=======  Capture Audio using native record ==============
@@ -220,11 +281,9 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
           var captureSuccess = function(mediaFiles) {
              var path = mediaFiles[0].fullPath; //we are only capturing one pde at a time
                   // do something interesting with the file
-                  alert("in success zone");
           };
           // capture error callback
           var captureError = function(error) {
-            alert("in error zone");
               navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
           };
           // start image capture

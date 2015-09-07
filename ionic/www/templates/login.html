@@ -8,17 +8,17 @@
         <div>
             <div class="list list-inset">
                 <label class="item item-input">
-                    <input ng-model="email" type="text" required placeholder="Email" />
+                    <input ng-model="email" type="email" required placeholder="Email" />
                 </label>
                 <label class="item item-input">
                     <input ng-model="password" type="password" required ng-change="analyze(password)"  placeholder="Password" />
                 </label>
             </div>
             <div class="padding-left padding-right">
-                <div class="button-bar">
-                    <a class="button" ng-click="firebaseLogin(username, password)">Login</a>
-                    <a class="button" href="#/tabs/login/register">Register</a>
-                </div>
+              
+                    <a class="button button-block" ng-click="firebaseLogin(username, password)">Login</a>
+                    <a class="button button-block" href="#/tabs/login/register">Register</a>
+               
          <!--
                 <div class="list list-inset padding padding-bottom" ng-style="passwordStrength">{{strength}}</div>  -->
             </div>

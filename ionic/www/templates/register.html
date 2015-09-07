@@ -14,19 +14,17 @@
             </label>
             <label class="item item-input">
                 <input ng-model="cpassword" type="password" required ng-change="analyzeMatch(password,cpassword)"  placeholder="Confirm password" />
-
             </label>
 
-                <!--2fa ng-model????-->
-    
-
+             <label class="item item-input">
+                <input ng-model="phonenumber" type="text" placeholder="Phone Number" />
+            </label>
         </div>
-
 
         <div class="padding-left padding-right">
             <div class="button-bar">
                 <a class="button" ng-click="firebaseRegister(email, password, cpassword)">Register</a>
-                <a class="button" href="#/tabs/login">Login</a>
+               <a href="#/tabs/authenticate"/>
             </div>
      
             <div class="list list-inset padding padding-bottom" ng-style="passwordStrength">{{strength}}</div> 
