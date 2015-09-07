@@ -30,7 +30,7 @@ uwatch.config(function($stateProvider, $urlRouterProvider) {
          .state('tab.authenticate',{
             url: '/authenticate',
             views:{
-                'tabs-authenticate':{
+                'tabs-login':{
                     templateUrl:'templates/authenticate.html',
                     controller:'LoginController',
                     catche:false
