@@ -42,7 +42,7 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
          template: errMsg
        });
        alertPopup.then(function(res) {
-         console.log(msg);
+         console.log(errMsg);
        });
      };
 
@@ -58,7 +58,7 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
             password: password
         }).then(function(authData) {
             loading();
-            $state.go("tab.view");
+            $state.go("tab.capture");
         }).catch(function(error) {
             alertError("Username not registered");
             console.error("ERROR: " + error);
@@ -86,7 +86,7 @@ uwatch.controller("LoginController", function($scope, $state, $firebaseAuth, $io
             });
         }).then(function(authData) {
             loading();
-            $state.go("tab.view");
+            $state.go("tab.authenticate");
         }).catch(function(error) {
             alertError(error);
             console.error("ERROR: " + error);

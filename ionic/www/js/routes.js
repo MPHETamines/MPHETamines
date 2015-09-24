@@ -27,6 +27,16 @@ uwatch.config(function($stateProvider, $urlRouterProvider) {
                 }
             }
         })
+         .state('tab.authenticate',{
+            url: '/authenticate',
+            views:{
+                'tabs-login':{
+                    templateUrl:'templates/authenticate.html',
+                    controller:'LoginController',
+                    catche:false
+                }
+            }
+        })
         .state('tab.register',{
             url: '/login/:register',
             views:{
