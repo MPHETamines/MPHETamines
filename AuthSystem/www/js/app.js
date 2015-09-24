@@ -10,9 +10,9 @@ var uwatch = angular.module('starter', ['ionic','ngCordova'])
   });
 });
 
-uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPopup ,$state,$timeout, $cordovaFileTransfer) {
+uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPopup ,$state,$timeout, $cordovaFileTransfer) {
 
-    $scope.IP = "196.249.1.209";
+    $scope.IP = "172.20.10.3";
     $scope.data = {};
 
     $scope.signupPage = function(){
@@ -21,6 +21,7 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
     $scope.loginPage = function(){
       $state.go("login");
     }
+
     var generateCode=function(){
         //var verificationCode = "";
          $rootScope.verificationCode = "";
@@ -76,10 +77,6 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
             }
             else{
                 
-                $scope.data.username = username;
-                $scope.data.email = email;
-                $scope.data.password = password;
-
                 //var en = CryptoJS.AES.encrypt(username,"uwatch");
               //  alert(en);
                 var hPass = sha512_256(password);
@@ -99,7 +96,6 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
                 request.success(function(data) {
                     if(data == "1"){
                         alert("Successfully created account");
-                        $scope.data.email = email;
                         sendVerificationCode(email,$rootScope.verificationCode);
                         $state.go("otp");
                      //$scope.responseMessage = "Successfully Created Account";
@@ -168,7 +164,6 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
            //$scope.responseMessage = "Email Already Exist";
           }
           else{
-            alert(data);
             alert("Something went wrong");
           }
       });
@@ -185,7 +180,7 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
         }
     }
 
-    var sendFileData = function(path,tags,type) {
+    var sendDataToDatabase = function(path,tags,type) {
       var hPath = sha512_256(path);
 
       //var eFile = CryptoJS.AES.encrypt(path,"i love ice cream");
@@ -218,6 +213,9 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
               alert("File alread exists");
            //$scope.responseMessage = "Email Already Exist";
           }
+          else if(data == "999"){
+              alert("User does not exit");
+          }
       });
 
     }
@@ -225,7 +223,7 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
 
 
 
-  var uploadFile = function(targetPath) {
+  var uploadFileToServer = function(targetPath) {
       //var android = "192.168.43.60"; 
       var url = "http://"+$scope.IP+"/auth/upload.php";
         var filename = targetPath.split("/").pop();
@@ -236,8 +234,8 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
         };
         $cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
             console.log("SUCCESS: " + JSON.stringify(result.response));
-            alert("success");
-            alert(JSON.stringify(result.response));
+            alert("Upload success");
+           // alert(JSON.stringify(result.response));
         }, function(err) {
             console.log("ERROR: " + JSON.stringify(err));
             alert(JSON.stringify(err));
@@ -253,9 +251,10 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
   $scope.captureImage = function(){
     var captureSuccess = function(mediaFiles) {
         var  path = mediaFiles[0].fullPath;
-        var filepath = "uploads/"+path.split("/")[4];
-        sendFileData(filepath,"Hatfiled","image");
-        uploadFile(path);
+        var p = path.split("/");
+        var filename = p[p.length-1];
+        sendDataToDatabase(filename,"Hatfiled","image");
+        uploadFileToServer(path);
     };
     var captureError = function(error) {
         navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
@@ -266,9 +265,10 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
   $scope.captureAudio = function(){
       var captureSuccess = function(mediaFiles) {
         var path = mediaFiles[0].fullPath;
-        var filepath = "uploads/"+path.split("/")[3];
-        sendFileData(filepath,"Hatfiled","audio");
-        uploadFile(path);
+        var p = path.split("/");
+        var filename = p[p.length-1];
+        sendDataToDatabase(filename,"Hatfiled","audio");
+        uploadFileToServer(path);
       };
       var captureError = function(error) {
           navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
@@ -279,9 +279,10 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
   $scope.captureVideo = function(){
     var captureSuccess = function(mediaFiles) {
           var  path = mediaFiles[0].fullPath;
-          var filepath = "uploads/"+path.split("/")[5];
-          sendFileData(filepath,"Hatfiled","audio");
-          uploadFile(path);
+          var p = path.split("/");
+          var filename = p[p.length-1];
+          sendDataToDatabase(filename,"Hatfiled","audio");
+          uploadFileToServer(path);
     };
     var captureError = function(error) {
         navigator.notification.alert('Error code: ' + error.code, null, 'Capture Error');
