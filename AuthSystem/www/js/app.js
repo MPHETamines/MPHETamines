@@ -12,10 +12,15 @@ var uwatch = angular.module('starter', ['ionic','ngCordova'])
 
 uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPopup ,$state,$timeout, $cordovaFileTransfer) {
 
-
+    $scope.IP = "196.249.1.209";
     $scope.data = {};
 
-
+    $scope.signupPage = function(){
+      $state.go("register");
+    }
+    $scope.loginPage = function(){
+      $state.go("login");
+    }
     var generateCode=function(){
         //var verificationCode = "";
          $rootScope.verificationCode = "";
@@ -30,7 +35,7 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
     var sendVerificationCode = function(_email,verificationCode){
         var request = $http({
             method: "POST",
-            url: "http://172.20.10.3/auth/mail.php",
+            url: "http://"+$scope.IP+"/auth/mail.php",
             crossDomain : true,
             data: {
                 email: _email,
@@ -81,12 +86,12 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
                 
                 var request = $http({
                     method: "POST",
-                    url: "http://172.20.10.3/auth/signup.php",
+                    url: "http://"+$scope.IP+"/auth/signup.php",
                     crossDomain : true,
                     data: {
                         email: email,
                         password: hPass,
-                        username: en
+                        username: username
                     },
                     headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
                 });
@@ -119,7 +124,7 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
             //alert(hPass);
             var request = $http({
                 method: "POST",
-                url: "http://172.20.10.3/auth/login.php",
+                url: "http://"+$scope.IP+"/auth/login.php",
                 crossDomain : true,
                 data: {
                     email: email,
@@ -148,7 +153,7 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
 
       var request = $http({
           method: "POST",
-          url: "http://172.20.10.3/auth/logout.php",
+          url: "http://"+$scope.IP+"/auth/logout.php",
           crossDomain : true,
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
       });
@@ -188,7 +193,7 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
       //alert("Encr: "+eFile);
       var request = $http({
           method: "POST",
-          url: "http://172.20.10.3/auth/filedata.php",
+          url: "http://"+$scope.IP+"/auth/filedata.php",
           crossDomain : true,
           data: {
               filetype: type,
@@ -222,7 +227,7 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
 
   var uploadFile = function(targetPath) {
       //var android = "192.168.43.60"; 
-      var url = "http://172.20.10.3/auth/upload.php";
+      var url = "http://"+$scope.IP+"/auth/upload.php";
         var filename = targetPath.split("/").pop();
         var options = {
             fileKey: "file",
@@ -248,8 +253,8 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
   $scope.captureImage = function(){
     var captureSuccess = function(mediaFiles) {
         var  path = mediaFiles[0].fullPath;
-
-        sendFileData(path,"Hatfiled","image");
+        var filepath = "uploads/"+path.split("/")[4];
+        sendFileData(filepath,"Hatfiled","image");
         uploadFile(path);
     };
     var captureError = function(error) {
@@ -261,8 +266,8 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
   $scope.captureAudio = function(){
       var captureSuccess = function(mediaFiles) {
         var path = mediaFiles[0].fullPath;
-
-        sendFileData(path,"Hatfiled","audio");
+        var filepath = "uploads/"+path.split("/")[3];
+        sendFileData(filepath,"Hatfiled","audio");
         uploadFile(path);
       };
       var captureError = function(error) {
@@ -274,7 +279,8 @@ uwatch.controller('MasterController', function($scope,$rootScope ,$http,$ionicPo
   $scope.captureVideo = function(){
     var captureSuccess = function(mediaFiles) {
           var  path = mediaFiles[0].fullPath;
-          sendFileData(path,"Hatfiled","audio");
+          var filepath = "uploads/"+path.split("/")[5];
+          sendFileData(filepath,"Hatfiled","audio");
           uploadFile(path);
     };
     var captureError = function(error) {
