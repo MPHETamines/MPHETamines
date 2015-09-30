@@ -1,0 +1,19 @@
+tr{
+    float: left;
+    padding: 0 0 30px 50px;
+}
+
+form {
+	background-color: lightblue;
+	padding: 40px;
+}
+form label{
+	font-size: 14px;
+}
+form input{
+	width: 300px;
+}
+
+.active{
+	color: #fff !important; 
+}

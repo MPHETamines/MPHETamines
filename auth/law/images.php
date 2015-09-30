@@ -2,9 +2,6 @@
 $connection = mysql_connect('localhost', 'root', '') or die ("Could not connect: " . mysql_error());;
 mysql_select_db('uwatchDB', $connection);
 
-$query = 'select * from files where filetype = "image"';
-$queryResults = mysql_query($query);
-$res = mysql_fetch_assoc($queryResults);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -26,13 +23,8 @@ $res = mysql_fetch_assoc($queryResults);
     <link href="css/thumbnail-gallery.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="css/style.css">
 
-    <!--Lightbox-->
-    <script src="js/jquery-1.11.0.min.js"></script>
-    <script src="js/lightbox.min.js"></script>
-
     <link href="css/lightbox.css" rel="stylesheet" />
 
-    
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -60,7 +52,15 @@ $res = mysql_fetch_assoc($queryResults);
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    
+                    <li>
+                        <a href="images.php" class="active">Images</a>
+                    </li>
+                    <li>
+                        <a href="videos.php">Videos</a>
+                    </li>
+                    <li>
+                        <a href="audios.php">Audios</a>
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -72,36 +72,46 @@ $res = mysql_fetch_assoc($queryResults);
     <div class="container">
 
         <div class="row">
+
             <div class="col-lg-12">
-                <h1 class="page-header">Login in</h1>
-
-                <form class="form-horizontal">
-                    <div class="control-group">
-                        <label class="control-label" for="inputEmail">Email</label>
-                        <div class="controls">
-                            <input type="text" id="inputEmail" placeholder="Email">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for="inputPassword">Password</label>
-                        <div class="controls">
-                            <input type="password" id="inputPassword" placeholder="Password">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <div class="controls">
-                            <label class="checkbox">
-                                <input type="checkbox"> Remember me
-                            </label>
-                            <button type="submit" class="btn btn-large btn-primary" >Sign in</button>
-                        </div>
-                    </div>
-                </form>
-
-
-
+                <h1 class="page-header">Images</h1>
             </div>
+
+
+<?php
+
+
+$query = 'select * from files where filetype = "image"';
+$results = mysql_query($query) or die(mysql_error());
+if(mysql_num_rows($results) < 1 ){
+    echo "No files to display!";    
+}
+else{
+    $i = 0;
+    echo "<table cellspacing='3'  cellpadding='4'><tr>";    
+    while($row = mysql_fetch_assoc($results)){
+        echo "<td>
+            <a href='../uploads/".$row['link']."' data-lightbox='images'>
+                <img src='../uploads/".$row['link']."'  width='100' height='100' alt='pde image' />
+            </a>
+        </td>";
+
+        if($i%2==0) 
+        echo "</tr><tr>";
+
+    }
+    $i++; //increment the counter by 1
+    if(!$i%2==0) { //if the last row only has one cell
+       echo "<td>&nbsp</td>"; //then create an empty cell and finish the row
+    }
+
+    echo "</tr></table>";
+}
+
+?>
+
         </div>
+
         <hr>
 
         <!-- Footer -->
@@ -116,11 +126,14 @@ $res = mysql_fetch_assoc($queryResults);
     </div>
     <!-- /.container -->
 
-    <!-- jQuery -->
-    <script src="js/jquery.js"></script>
-
+    <!-- jQuery -
+    <script src="js/jquery.js"></script> -->
+    <script src="js/jquery-1.11.0.min.js"></script>
+    <!-- Lightbox-->
+    <script src="js/lightbox.min.js"></script>
     <!-- Bootstrap Core JavaScript -->
     <script src="js/bootstrap.min.js"></script>
+
 
 </body>
 
