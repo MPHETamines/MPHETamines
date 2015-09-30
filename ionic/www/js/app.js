@@ -304,6 +304,28 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
         navigator.device.capture.captureVideo(captureSuccess, captureError, {limit:1});
       };
 
+            //var CryptoJS = require("crypto-js");
+      $scope.encrypted = "";
+
+      $scope.encrptStuff = function()
+      {
+      // Encrypt
+        encrypted = CryptoJS.AES.encrypt('i know you there', 'key123');
+
+        alert(encrypted);
+      }
+
+
+      $scope.decryptStuff = function()
+      {
+           // Decrypt
+        var bytes  = CryptoJS.AES.decrypt(encrypted.toString(), 'key12');
+        var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+
+        alert(plaintext)
+      }
+
+
 });
 
 $scope.sendMail(email){
