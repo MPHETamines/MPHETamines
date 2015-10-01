@@ -304,7 +304,61 @@ uwatch.controller("CaptureController", function($scope, $ionicHistory, $firebase
         navigator.device.capture.captureVideo(captureSuccess, captureError, {limit:1});
       };
 
+            //var CryptoJS = require("crypto-js");
+      $scope.encrypted = "";
+
+      $scope.encrptStuff = function()
+      {
+      // Encrypt
+        encrypted = CryptoJS.AES.encrypt('i know you there', 'key123');
+
+        alert(encrypted);
+      }
+
+
+      $scope.decryptStuff = function()
+      {
+           // Decrypt
+        var bytes  = CryptoJS.AES.decrypt(encrypted.toString(), 'key12');
+        var plaintext = bytes.toString(CryptoJS.enc.Utf8);
+
+        alert(plaintext)
+      }
+
+
 });
+
+$scope.sendMail(email){
+$.ajax({
+      type: 'POST',
+      url: 'https://mandrillapp.com/api/1.0/messages/send.json',
+      data: {
+        'key': '2IlnR9qAdL-rHuvfYxUJKg',
+        'message': {
+          'from_email': 'uwatchproject301@gmail.com',
+          'to': [
+              {
+                'email': email,
+                'name': 'SA Citizen',
+                'type': 'to'
+              }
+            ],
+          'autotext': 'true',
+          'subject': 'Please Confrim your uWatch signup',
+          'html': '<img src="img/uwatchlogo.png" alt="uwatch logo" height="42" width="42">
+                  <br />
+                  <p>Hi</p><br/>
+                  <p>You have Registered to uWatch.</p><br />
+                  <p>Follow the link below to Confirm your Email Address</p><br />
+                  <a href="http://www.w3schools.com"></a>
+          '
+        }
+      }
+     }).done(function(response) {
+       console.log(response); // if you're into that sorta thing
+     });
+
+}
 
 /*
     $scope.upload = function() {
