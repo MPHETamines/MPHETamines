@@ -1,10 +1,36 @@
-<?php
-$connection = mysql_connect('localhost', 'root', '') or die ("Could not connect: " . mysql_error());;
-mysql_select_db('uwatchDB', $connection);
+<?php 
 
-$query = 'select * from files where filetype = "image"';
-$queryResults = mysql_query($query);
-$res = mysql_fetch_assoc($queryResults);
+session_start();
+$connection = mysqli_connect('localhost', 'root', '','uwatchDB') or die ("Could not connect: " . mysqli_error());
+//mysql_select_db('uwatchDB', $connection);
+$error = "";
+if(isset($_POST['submit'])){
+    if( !empty($_POST['username']) && !empty($_POST['password']) ){
+        $username = mysqli_real_escape_string($connection, trim($_POST['username']));
+        $password = mysqli_real_escape_string($connection, trim($_POST['password']));
+
+        $query = 'select * from officers where username ="' . $username . '" and password ="' . $password . '"';
+
+        
+        $data = mysqli_query($connection, $query);
+        if (mysqli_num_rows($data) == 0) {
+            $error = "Invalid username or password";
+        }else{
+            $row = mysqli_fetch_assoc($data);
+            $_SESSION['username'] = $username;
+            $_SESSION['password'] = $password;
+            $_SESSION['fullname'] = $row['fullname'];
+            $_SESSION['role'] = $row['role'];
+
+            if($row['role'] == "Chief-judge"){
+                header("Location: manager.php");
+            }else{
+                header("Location: images.php");
+            }
+        }
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -24,13 +50,14 @@ $res = mysql_fetch_assoc($queryResults);
 
     <!-- Custom CSS -->
     <link href="css/thumbnail-gallery.css" rel="stylesheet">
-
+    <link rel="stylesheet" type="text/css" href="css/style.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
+    
 </head>
 
 <body>
@@ -51,10 +78,7 @@ $res = mysql_fetch_assoc($queryResults);
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                    <li>
-                        <a href="#">Logout</a>
-                    </li>
-                    
+                   
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -62,29 +86,33 @@ $res = mysql_fetch_assoc($queryResults);
         <!-- /.container -->
     </nav>
 
-    <!-- Page Content -->
-    <div class="container">
+    <!-- Start form -->
+    <div class="wrapper">
+        <form class="form-signin" method="post" action="<?php echo $_SERVER['PHP_SELF']?>">        
+            <?php 
+                if(isset($error) && $error !== ""){
+                    echo "<div class='error'><p>".$error."</p></div>";
+                }else if(isset($_SESSION['msg'])){
+                    echo "<div class='success'><p>".$_SESSION['msg']."</p></div>";
+                }
+                else{
+                    echo "";
+                }
+            ?>
+            <h2 class="form-signin-heading">Login</h2>
+            <input type="text" class="form-control" name="username" placeholder="Username" required="" autofocus="" />
+            <input type="password" class="form-control" name="password" placeholder="Password" required=""/>   
+            <label class="checkbox">
+                <input type="checkbox" value="rememberme" id="rememberMe" name="rememberMe"> Remember me
+            </label>
+            <input class="btn btn-lg btn-primary btn-block" name="submit" value="Login" type="submit">   
+            <br/>
+            <a href="register.php" class="add">Add new officer</a>
+        </form>
+    </div>
+    <!-- end form -->
 
-        <div class="row">
-
-            <div class="col-lg-12">
-                <h1 class="page-header">Images from the database</h1>
-            </div>
-
-<?php
-while($row = mysql_fetch_array($queryResults))
-{
-    
-?>
-            <div id="fly" class="col-lg-3 float-left col-md-4 col-xs-6 thumb">
-                <a class="thumbnail" href="#">
-                    <img class="img-responsive" src=<?php echo "../".$row["link"]; }?> alt="">
-                </a>
-            </div>
-
-        </div>
-
-        <hr>
+       <hr>
 
         <!-- Footer -->
         <footer>
