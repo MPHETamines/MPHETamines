@@ -11,7 +11,6 @@ if(isset($_POST['submit'])){
 
         $query = 'select * from officers where username ="' . $username . '" and password ="' . $password . '"';
 
-        
         $data = mysqli_query($connection, $query);
         if (mysqli_num_rows($data) == 0) {
             $error = "Invalid username or password";
