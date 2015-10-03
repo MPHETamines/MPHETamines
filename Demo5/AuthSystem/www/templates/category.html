@@ -1,0 +1,19 @@
+  <ion-view title="Category">
+      <ion-header-bar class="bar-dark">
+        <div class="h1 title">Category</div>
+      </ion-header-bar>
+
+    <ion-content class="has-header">
+      <div class="list list-inset">
+        <ion-radio ng-model="choice" ng-value="'Drug'" >Drug</ion-radio>
+        <ion-radio ng-model="choice" ng-value="'Murder'">Murder</ion-radio>
+        <ion-radio ng-model="choice" ng-value="'Rape'">Rape</ion-radio>
+        <ion-radio ng-model="choice" ng-value="'Robbery'">Robbery</ion-radio>
+        <ion-radio ng-model="choice" ng-value="'Violence'">Violence</ion-radio>
+        <ion-radio ng-model="choice" ng-value="'Other'">Other</ion-radio>
+        
+       <button class="button button-block button-positive button-positive" ng-click="sendOption(choice)">Upload</button>
+     </div>
+    </ion-content>
+
+  </ion-view>
