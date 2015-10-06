@@ -1,0 +1,16 @@
+{"users":[
+	{
+		"name":"Alice Smith",
+		"gender":"female",
+		"phone":"0813361000",
+		"email":"alice@test.com",
+		"password":"Alice100"
+	},
+	{
+		"name":"Bob Martins",
+		"gender":"male",
+		"phone":"0725559192",
+		"email":"bob@test.com",
+		"password":"Bob100"
+	}
+]}
