@@ -1,6 +1,37 @@
-<?php
-$connection = mysql_connect('localhost', 'root', '') or die ("Could not connect: " . mysql_error());;
-mysql_select_db('uwatchDB', $connection);
+
+
+<?php 
+
+session_start();
+$connection = mysqli_connect('localhost', 'root', '','uwatchDB') or die ("Could not connect: " . mysqli_error());
+//mysql_select_db('uwatchDB', $connection);
+$error = "";
+if(isset($_POST['submit'])){
+    if( !empty($_POST['username']) && !empty($_POST['password']) ){
+        $username = mysqli_real_escape_string($connection, trim($_POST['username']));
+        $password = mysqli_real_escape_string($connection, trim($_POST['password']));
+
+        $query = 'select * from officers where username ="' . $username . '" and password ="' . $password . '"';
+
+        $data = mysqli_query($connection, $query);
+        if (mysqli_num_rows($data) == 0) {
+            $error = "Invalid username or password";
+        }else{
+            $row = mysqli_fetch_assoc($data);
+            $_SESSION['username'] = $username;
+            $_SESSION['password'] = $password;
+            $_SESSION['fullname'] = $row['fullname'];
+            $_SESSION['role'] = $row['role'];
+
+            if($row['role'] == "Chief-judge"){
+                header("Location: manager.php");
+            }else{
+                header("Location: images.php");
+            }
+        }
+    }
+}
+
 
 $query = 'select * from files where filetype = "image"';
 $queryResults = mysql_query($query);
