@@ -1,0 +1,29 @@
+<ion-view title="Login" ng-init="">
+
+  <ion-header-bar class="bar-dark">
+    <div class="h1 title">Login</div>
+  </ion-header-bar>
+
+    <ion-content>
+        <div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input ng-model="username" type="text" required placeholder="Username" />
+                </label>
+                <label class="item item-input">
+                    <input ng-model="password" type="password" required ng-change="analyze(password)"  placeholder="Password" />
+                </label>
+            </div>
+            <div class="padding-left padding-right">
+                <div class="button-bar">
+                    <a class="button" ng-click="firebaseLogin(username, password)">Login</a>
+                    <a class="button" href="#/tabs/login/register">Register</a>
+                </div>
+         <!--
+                <div class="list list-inset padding padding-bottom" ng-style="passwordStrength">{{strength}}</div>  -->
+            </div>
+
+
+        </div>
+    </ion-content>
+</ion-view>
