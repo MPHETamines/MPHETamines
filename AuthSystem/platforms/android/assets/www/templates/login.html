@@ -1,0 +1,28 @@
+
+<ion-view title="Login" >
+
+  <ion-header-bar class="bar-dark">
+    <div class="h1 title">Login</div>
+  </ion-header-bar>
+
+    <ion-content>
+        <div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input ng-model="username" type="text" required placeholder="Username" />
+                </label>
+                <label class="item item-input">
+                    <input ng-model="password" type="password" placeholder="Password" />
+                </label>
+            </div>
+            <div class="padding-left padding-right">
+                <div class="button-bar">
+                    <button class="button" ng-click="loginFunction(username, password)">Login</button>
+                    <button class="button" ng-click="signupPage()">Register</button>
+                </div>
+            </div>
+
+
+        </div>
+    </ion-content>
+</ion-view>

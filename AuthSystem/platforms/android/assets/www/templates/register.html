@@ -1,0 +1,33 @@
+<ion-view title="Register" >
+
+  <ion-header-bar class="bar-dark">
+    <div class="h1 title">Register</div>
+  </ion-header-bar>
+
+    <ion-content>
+        <div>
+            <div class="list list-inset">
+                <label class="item item-input">
+                    <input ng-model="username" type="text" required placeholder="Username" />
+                </label>
+                <label class="item item-input">
+                    <input ng-model="email" type="email" required placeholder="Email address" />
+                </label>
+                <label class="item item-input">
+                    <input ng-model="password" type="password" placeholder="Password" />
+                </label>
+                <label class="item item-input">
+                    <input ng-model="cpassword" type="password" placeholder="Confirm assword" />
+                </label>
+            </div>
+            <div class="padding-left padding-right">
+                <div class="button-bar">
+                    <button class="button" ng-click="getUserData(username,email,password, cpassword)">Register</button>
+                    <button class="button" ng-click="loginPage()">Login</button>
+                </div>
+            </div>
+
+
+        </div>
+    </ion-content>
+</ion-view>

@@ -1,0 +1,18 @@
+<ion-view view-title="OTP">
+    <ion-content class="padding">
+        <div class="list">
+            <img src="img/uwatch.png" class="logo">
+        </div>
+        <div class="list card padding">
+            <label class="item item-input">
+                <span class="input-label">OTP:</span>
+                <input type="text" ng-model="otp" placeholder="Enter verification code">
+            </label>
+        </div>
+        <div class="list" style="text-align:center">
+            <button class="button icon-left ion-checkmark button-positive" ng-click="verifyCode(otp)">Verify code</button>
+          <button class="button button-outline icon-right ion-refresh button-positive" ng-click="resendCode()">Resend code</button>
+          <button class="button button-clear button-positive icon-left ion-person padding" ng-click="signupPage()">Create new account</button>
+        </div>
+    </ion-content>
+</ion-view>
