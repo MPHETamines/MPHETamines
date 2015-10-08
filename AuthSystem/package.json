@@ -21,7 +21,9 @@
     "cordova-plugin-media-capture",
     "org.apache.cordova.network-information",
     "com.jsmobile.plugins.sms",
-    "cordova-plugin-whitelist"
+    "cordova-plugin-whitelist",
+    "cordova-plugin-battery-status",
+    "org.apache.cordova.geolocation"
   ],
   "cordovaPlatforms": [
     "android"

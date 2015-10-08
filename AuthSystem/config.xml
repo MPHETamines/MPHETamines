@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.filetransfer710372" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-  <name>FileTransfer</name>
+  <name>uWatch</name>
   <description>
-        An Ionic Framework and Cordova project.
+        Potential evidance capturing.
     </description>
-  <author email="hi@ionicframework" href="http://ionicframework.com/">
-      Ionic Framework Team
+  <author email="harry@moralemedia.co.za" href="http://moralemedia.co.za/">
+      Mphetamines
     </author>
   <content src="index.html"/>
   <access origin="*"/>
@@ -15,6 +15,9 @@
   <preference name="BackupWebStorage" value="none"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="SplashScreenDelay" value="3000"/>
+  <feature name="Geolocation">
+    <param name="android-package" value="org.apache.cordova.GeoBroker" />
+  </feature>	  
   <feature name="StatusBar">
     <param name="ios-package" value="CDVStatusBar" onload="true"/>
   </feature>
