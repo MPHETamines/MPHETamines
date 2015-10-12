@@ -30,6 +30,12 @@ else{
             <a href='../uploads/".$row['link']."' data-lightbox='images'>
                 <img src='../uploads/".$row['link']."'  width='100' height='100' alt='pde image' />
             </a>
+            <form>
+                <select name='officers'>
+                    <option value='police'>Police</option>
+                    <option>Judge</option>
+                </select>
+            </form>
         </td>";
 
         if($i%2==0) 

@@ -23,8 +23,6 @@ tr{
 
 $connection = mysql_connect('localhost', 'root', '') or die ("Could not connect: " . mysql_error());
 mysql_select_db('uwatchDB', $connection);
-
-$location = $_GET['searchValue'];
 if(isset($_GET['q'])){
 
     $q = intval($_GET['q']);
@@ -58,11 +56,11 @@ else{
     $category = "";
 }
 
-$query = 'select * from files where category ="' . $category . '" OR tags = "'.$location.'"';
+$query = 'select * from files where category ="' . $category . '"';
 $results = mysql_query($query) or die(mysql_error());
 
 if(mysql_num_rows($results) < 1 ){
-    echo "No files found!";    
+    echo "No files under that category!";    
 }
 else{   
     echo "<table id='foundData'>

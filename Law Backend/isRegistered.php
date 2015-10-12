@@ -35,10 +35,10 @@ $queryResults = mysql_query($query);
 $res = mysql_fetch_assoc($queryResults);
 
 if($res['cnt']==0){
-    echo "1";
+    echo "1"; //success
 }
 else
 {
-    echo "0";
+    echo "0"; //error
 }
 ?>

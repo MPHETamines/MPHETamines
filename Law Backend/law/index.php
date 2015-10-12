@@ -21,8 +21,8 @@ if(isset($_POST['submit'])){
             $_SESSION['fullname'] = $row['fullname'];
             $_SESSION['role'] = $row['role'];
 
-            if($row['role'] == "Chief-judge"){
-                header("Location: manager.php");
+            if($row['role'] == "Admin"){
+                header("Location: admin_manage.php");
             }else{
                 header("Location: images.php");
             }

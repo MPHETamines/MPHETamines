@@ -1,4 +1,5 @@
 <?php  
+session_start();
 
 //CORS
 if (isset($_SERVER['HTTP_ORIGIN'])) {
@@ -22,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     exit(0);
 }
 
-session_start();
 $postdata = file_get_contents("php://input");
 $request = json_decode($postdata);
 
