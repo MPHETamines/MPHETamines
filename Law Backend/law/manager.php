@@ -69,8 +69,10 @@ if (mysqli_num_rows($data) == 0) {
                     <li>
                         <a href="audios.php">Audios</a>
                     </li>
-                    <input  id = "searchValue" type="text" placeholder="use category or location">
-                    <button type="button" onclick = "location.href ='getuser.php'">Search</button>
+                    <form  action = "search.php" method = "post">
+                        <input name = "searchValue" type="text" placeholder="use category or location">
+                        <button type="submit" onclick = "location.href ='search.php'">Search</button>
+                    </form>
                     <li class="name"> 
                       <a href="#">
                         <b>Hello: </b><?php if(isset($_SESSION['fullname'])) echo $_SESSION['fullname'];?>
