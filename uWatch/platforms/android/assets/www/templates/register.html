@@ -1,0 +1,37 @@
+
+<ion-view>
+    <ion-content class="padding">
+       <div class="list">
+            <img src="img/uwatch.png" class="logo">
+        </div>
+   
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">Fullname:</span>
+                <input type="text" ng-model="fullname">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Email:</span>
+                <input type="email" ng-model="email">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Password:</span>
+                <input type="password" ng-model="regpassword">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Confirm password:</span>
+                <input type="password" ng-model="regcpassword">
+            </label>
+            <button class="button button-block button-positive activated"  ng-click="getUserData(fullname,email,regpassword,regcpassword)">
+                Sign In
+            </button>
+        </div>
+        <div class="list" style="text-align:center">
+            <p class="terms">Terms and conditions apply</p>
+            <button ng-click="loginPage()" class="button button-small button-outline icon-left ion-person button-positive">
+                Already have account
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

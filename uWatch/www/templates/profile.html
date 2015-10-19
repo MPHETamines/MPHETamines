@@ -1,0 +1,33 @@
+<ion-view title="User Profile" ng-init="">
+
+  <ion-header-bar class="bar-dark">
+    <div class="h1 title">Profile</div>
+    <button class="button button-clear icon-right ion-log-out" ng-click="logoutFunction()">logout</button>
+  </ion-header-bar>
+
+    <ion-content>
+       <div class="list card">
+          <a class="item item-avatar" href="#">
+            <img src="img/uwatch.png">
+            <h2>{{getFullname()}}</h2>
+            <p>{{getEmail()}}</p>
+          </a>
+
+        <a class="item item-icon-left item-positive" href="#">
+          <i class="icon ion-upload"></i>
+          Files uploaded:
+          <span class="badge badge-assertive">0</span>
+        </a>
+
+        </div>
+        <div class="list"  style="text-align:center">
+            
+            <button ng-click="updatePassword()" class="button button-outline icon-left ion-person-add button-positive">
+                Change Password
+            </button>
+            <button ng-click="confirmDelete()" class="button button-outline icon-left ion-locked button-assertive">
+                Delete Account
+            </button>
+        </div>
+    </ion-content>
+</ion-view>
