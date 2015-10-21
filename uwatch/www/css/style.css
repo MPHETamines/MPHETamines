@@ -1,0 +1,52 @@
+.bar-dark, .tabs-dark > .tabs {
+	background-color: #001C42 !important;
+	
+}
+.bar.bar-dark{
+	background-color: #001C42 !important;
+	
+}
+
+.button.button-dark, .button.button-positive{
+	background-color: #0A1D40 !important;
+	border-color: #0A1D40;
+	border-radius: 5px;
+}
+.button.button-small.button-outline{
+	color: #0A1D40;
+}
+.item-input{
+	border-radius: 5px;
+}
+.col{
+	text-align: center;
+}
+
+.col img:hover, .col img:active{
+	border: 1px solid #ccc;
+	border-radius: 15px;
+}
+
+.row{
+	margin-top: 10%;
+	padding-bottom: 100px;
+}
+
+.pane, .view{
+	/*background: url('../img/a.png') repeat;*/
+	/*background-color: #130C19;
+	*/
+	background-color: #F1F0F2;
+}
+
+.row img{
+	outline-color: #fff;
+}
+
+.list.logo{
+	text-align: center;
+}
+
+.list.logo img{
+	width:60%
+}

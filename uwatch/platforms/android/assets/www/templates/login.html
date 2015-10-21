@@ -1,0 +1,32 @@
+<ion-view>
+    <ion-content class="padding">
+        <div class="list logo">
+            <p>
+                <img src="img/icons/logo.png">
+            </p>
+        </div> 
+
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">Email:</span>
+                <input type="email" ng-model="username">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Password:</span>
+                <input type="password" ng-model="password">
+            </label>
+            <button class="button button-block button-dark activated"  ng-click="loginFunction(username,password)">
+                Sign In
+            </button>
+        </div>
+        <div class="list" style="text-align:center">
+            <p class="terms">Terms and conditions apply</p>
+            <button ng-click="signupPage()" class="button button-small button-outline icon-left ion-person-add ">
+                Create an account
+            </button>
+            <button ng-click="forgotPassword()" class="button button-small button-outline icon-left ion-locked ">
+                Forgot password
+            </button>
+        </div>
+    </ion-content>
+</ion-view>
