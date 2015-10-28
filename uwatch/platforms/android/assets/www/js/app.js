@@ -82,6 +82,6 @@ uwatch.config(function($stateProvider, $urlRouterProvider, $httpProvider){
         controller: 'IntroCtrl'
       })
       */
-      $urlRouterProvider.otherwise("/tabs/capture");
+      $urlRouterProvider.otherwise("/login");
 
 });

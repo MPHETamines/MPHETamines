@@ -9,10 +9,14 @@
         <ion-spinner icon="lines" class="spinner-calm"></ion-spinner>
 -->
        <div class="list card">
-          <a class="item item-avatar" href="#">
-            <img src="img/uwatch.png">
-            <h2>{{ getFullname() }}</h2>
-            <p>{{ getEmail() }}</p>
+          <a class="item item-avatar">
+            <img src="img/icons/logo.png">
+          </a>
+          <a class="item">
+            <p> <b>Name: </b> {{ getFullname() }}</p>
+          </a>
+          <a class="item">
+            <p> <b>E-mail: </b> {{ getEmail() }}</p>
           </a>
           <a class="item item-icon-left item-positive" href="#">
             <i class="icon ion-upload"></i>
@@ -21,12 +25,13 @@
           </a>
         </div>
         <div class="list padding" style="text-align:center">     
-              <button ng-click="updatePassword()" class="button icon-left ion-person-add button-positive">
+              <button ng-click="updatePassword()" class="button  button-small icon-left ion-person-add button-positive">
                   Change Password
               </button>
-              <button ng-click="confirmDelete()" class="button icon-left ion-locked button-assertive">
+              <button ng-click="confirmDelete()" class="button  button-small icon-left ion-locked button-assertive">
                   Delete Account
               </button>
+              
         </div>
     </ion-content>
 </ion-view>

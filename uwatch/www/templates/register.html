@@ -7,22 +7,25 @@
         </div> 
    
         <div class="list">
+
+            <div class="list list-inset padding padding-bottom" ng-style="passwordStrength">{{strength}}</div> 
+            
             <label class="item item-input">
                 <span class="input-label">Fullname:</span>
-                <input type="text" ng-model="fullname">
+                <input type="text" ng-model="fullname" placeholder="John Doe">
             </label>
 
             <label class="item item-input">
                 <span class="input-label">Email:</span>
-                <input type="email" ng-model="email">
+                <input type="email" ng-model="email"  placeholder="johndoe@mail.com">
             </label>
             <label class="item item-input">
                 <span class="input-label">Password:</span>
-                <input type="password" ng-model="regpassword">
+                <input type="password" ng-model="regpassword" ng-change="analyze(regpassword)"> 
             </label>
             <label class="item item-input">
                 <span class="input-label">Confirm password:</span>
-                <input type="password" ng-model="regcpassword">
+                <input type="password" ng-model="regcpassword" ng-change="analyzeMatch(regpassword,regcpassword)">
             </label>
             <button class="button button-block button-dark activated"  ng-click="getUserData(fullname,email,regpassword,regcpassword)">
                 Signup
@@ -34,5 +37,6 @@
                 Already have account
             </button>
         </div>
+
     </ion-content>
 </ion-view>

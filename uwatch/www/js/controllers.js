@@ -3,8 +3,9 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
 
    // $scope.IP = "192.168.42.61";
     $scope.IP = "192.168.43.60"; //Sumsang
-    //$scope.IP = "172.20.10.3"; //ios
 
+   // $scope.IP = "172.20.10.3"; //ios
+    //$scope.IP = "192.168.43.40";  //taariq hotspot
     //$scope.data = {};
 
     var checkBattery = function(){
@@ -74,6 +75,13 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
     });
    };
 
+    var loading = function(msg){
+      $ionicLoading.show({
+        template: '<ion-spinner icon="dots"></ion-spinner><p>'+msg+'</p>',
+        hideOnStageChange: true
+      });
+    };
+
 //======= Helper functions =============  
     $scope.signupPage = function(){
       $scope.clean();
@@ -136,7 +144,7 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
       // alert(otp + " : "+$rootScope.verificationCode);
       // alert($rootScope.username + " "+$rootScope.email + " "+$rootScope.password);
       if(otp == "" || otp == undefined){
-        showAlert('Empty OTP', 'Please enter a code emailed to you or resend the code.');
+        showAlert('Empty OTP', 'Please enter a code emailed to you or choose resend code.');
       }
       else if(otp != undefined && otp === $rootScope.verificationCode){
        //   showToast('Correct code','short','bottom');
@@ -206,6 +214,7 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
 
 //========== SEND EMAIL WITH VERIFICATON CODE =========
     var sendVerificationCode = function(_email,verificationCode){
+        loading("Please wait...");
         var request = $http({
             method: "POST",
             url: "http://"+$scope.IP+"/auth/mail.php",
@@ -218,18 +227,19 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
         });
         /* Successful HTTP post request or not */
         request.success(function(data) {
-          showToast('Email has been successfully sent', 'short', 'bottom')
+          $ionicLoading.hide();
+          showToast('Email has been successfully sent', 'long', 'bottom')
           console.log(data);
         });
     };
 
 
     $scope.getUserData = function(username,email,password,cpassword){
-        if(username == "" || username == undefined || password == "" || password == undefined ){
-            showToast("Complete all the input fields","long","center");
+        if(username == "" || username == undefined || password == "" || password == undefined || email == "" || email == undefined){
+            showAlert("Registration failed","Complete all the input fields");
         }
         else if(password !== cpassword){
-            showToast("Password does not match","long","center");
+            showAlert("Registration failed","Password does not match");
         }else{
           var request = $http({
               method: "POST",
@@ -255,6 +265,7 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
                 $rootScope.email = email;
                 $rootScope.password = password;
                 $state.go("otp");
+
               }
               else{
                alert("Signup Error");
@@ -265,12 +276,57 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
         }
 
     };
+
+    $scope.getV = function(){
+      return $rootScope.verificationCode;
+    }
 //============= SIGN UP / REGISTER =============
+        // Password strength
+    var strongRegex = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})");
+    var mediumRegex = new RegExp("^(((?=.*[a-z])(?=.*[A-Z]))|((?=.*[a-z])(?=.*[0-9]))|((?=.*[A-Z])(?=.*[0-9])))(?=.{6,})");
+
+    $scope.passwordStrength = {
+        //css will be added dynamically
+    };
+    $scope.correct = false;
+        //checks password strength
+    $scope.analyze = function(value) {
+        if(strongRegex.test(value)) {
+            $scope.strength = "Strong password";
+            $scope.passwordStrength["color"] = "green";
+        }
+        else if(mediumRegex.test(value)) {
+            $scope.strength = "Medium  password";
+            $scope.passwordStrength["color"] = "orange";
+        }
+        else if(value == "" || value == undefined){
+            $scope.strength = "";
+            $scope.passwordStrength["color"] = "#fff";
+        }
+        else {
+            $scope.strength = "Weak password";
+            $scope.passwordStrength["color"] = "red";
+        }
+
+    };
+    //checks passwords match
+    $scope.analyzeMatch = function(pass, cpass) {
+        if($scope.correct){
+
+          if(pass != cpass) {
+              $scope.strength = "Password does not macth";
+              $scope.passwordStrength["color"] = "red";
+          }
+          else {
+              $scope.strength = "Passwords match";
+              $scope.passwordStrength["color"] = "green";
+          }
+        }
+    };
+
     $scope.signup = function(username,email,password) {
         if(username != undefined && password != undefined){
-           $ionicLoading.show({
-             template: "Signing up ..."
-           });  
+           loading("Signing up...");
           var passwordHash = sha512_256(password);
           var request = $http({
               method: "POST",
@@ -310,10 +366,9 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
 
 
     $scope.loginFunction = function(email, password) {
+      //  var attempt = 0;
         if(password != undefined && email !== undefined ){
-            $ionicLoading.show({
-              template:'logging in...'
-            });
+            loading("Signing in...");
             //encryptString(password).toString()
             var passwordHash = sha512_256(password);
             var request = $http({
@@ -330,21 +385,20 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
             request.success(function(data) {
                $ionicLoading.hide();
                 if(data == "2" ) {
-                    showAlert("Login","Username is not registered");
+                    showAlert("Login failed","Username is not registered");
                     //showToast("Username is not registered, please signup","long","center");
                 }
                 else if(data == "1" ) {
-                  showAlert("Login","Username and password do not match");
-                  //  showToast("Username and password do not match","long","center");
+                  showAlert("Login failed","Username and password do not match");
                 }
                 else if(data == "0"){
-                 //   showToast('Login success','short','center');
-                  numFile(email);
+                    showToast('Login success','short','bottom');
+                    numFile(email);
                     setUserData();
                     $state.go("tab.capture");
                 }
                 else{
-                   showAlert("Login","Error while logging in");
+                   showAlert("Login failed","Server not responding.");
                    // showToast("Error while logging in","long","center");
                  }
             });
@@ -352,12 +406,19 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
         }
     };
 
+    $scope.blockAccount = function(){
+        $scope.logoutFunction();
+        $ionicLoading.shown(function(){
+          template : 'Please wait for 60 seconds...'
+        });
+        $timeout(function(){
+          $ionicLoading.hide();
+        }, 60000);
+    }
+
     $scope.logoutFunction = function() {
       $scope.clean();
-      $ionicLoading.show({
-          template:'logging off...'
-        });
-
+      loading("signing off...");
        $timeout(function(){
           $ionicLoading.hide();
        },3000);
@@ -388,7 +449,7 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
         showAlert("Category","Please choose an option from the categories");
       }else{
         uploadFile($rootScope.path);
-        sendDataToDatabase($rootScope.filename,"Hatfiled",$rootScope.filetype,category);
+        sendDataToDatabase($rootScope.filename,"Hatfield",$rootScope.filetype,category);
         $state.go("tab.capture");
       }
       
@@ -397,10 +458,7 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
 
 
     var sendDataToDatabase = function(filename,location,filetype,category) {
-       //$ionicLoading.show({
-      //     template:'Uploading...'
-      // });
-      //$cordovaProgress.showSimpleWithLabel(true, "Sending metadata ...");
+      loading("Uploading metadata...");
       var request = $http({
           method: "POST",
           url: "http://"+$scope.IP+"/auth/filedata.php",
@@ -416,30 +474,30 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
       });
       /* Successful HTTP post request or not */
       request.success(function(data) {
-          //$ionicLoading.hide();
-          $cordovaProgress.hide();
+          $ionicLoading.hide();
           if(data == "1"){
             //  alert("File details uploaded Successfully");
             showToast('File uploaded Successfully','long', 'bottom');
           }
          else if(data == "2"){
-              showToast("Failed to upload file metadata","long","center");
+              showAlert("Upload failed","Failed to upload file metadata");
           }
           else if(data == "999"){
-              showToast("User does not exists","long","center");
-          }else{
-            showToast("Server is not responding","long","center");
+              showAlert("Upload failed","User does not exists");
+          }
+          else if(data == '404'){
+              showAlert("Upload failed","Session not set");
+          }
+          else{
+            showAlert("Upload failed","Server is not responding");
           }
       });
 
     };
 
   var uploadFile = function(targetPath) {
-      $cordovaProgress.showSimpleWithLabel(true, "Uploading evidence ...");
-
-      var url = "http://"+$scope.IP+"/auth/upload.php";
-      //target path may be local or url
-     // var targetPath = "/android_asset/www/img/apple.png";
+        loading("Uploading file...");
+        var url = "http://"+$scope.IP+"/auth/upload.php";
         var filename = targetPath.split("/").pop();
         var options = {
             fileKey: "file",
@@ -447,24 +505,22 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
             chunkedMode: false
         };
         $cordovaFileTransfer.upload(url, targetPath, options).then(function(result) {
-            $cordovaProgress.hide();
+            $ionicLoading.hide();
             console.log("SUCCESS: " + JSON.stringify(result.response));
             showToast('File uploaded Successfully','bottom', 'short');
-          //  alert("success");
-            //alert(JSON.stringify(result.response));
         }, function(err) {
-            $cordovaProgress.hide();
+            $ionicLoading.hide();
             console.log("ERROR: " + JSON.stringify(err));
             alert(JSON.stringify(err));
         }, function (progress) {
-          $cordovaProgress.hide();
+          $ionicLoading.hide();
             // constant progress updates
             $timeout(function () {
               $scope.downloadProgress = (progress.loaded / progress.total) * 100;
             })
         });
 
-        $cordovaProgress.hide();
+        $ionicLoading.hide();
     }
 
 
@@ -544,6 +600,7 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
         states[Connection.CELL]     = 'Cell generic connection';
         states[Connection.NONE]     = 'No network connection';
         //information.connection = states[networkState];
+
         showAlert("Connection Type", states[networkState]);
     };
 
@@ -575,10 +632,12 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
 
     //=============  Getting the geoLocation method ========================
   $scope.getLocation = function(){
+    alert("ccc");
       if(navigator.geolocation == false){
         alert("No geoLocation");
       }
       navigator.geolocation.getCurrentPosition(function(pos) {
+        alert(position.latitude);
         geocoder = new google.maps.Geocoder();
         var infowindow = new google.maps.InfoWindow;
         var latlng = new google.maps.LatLng(pos.coords.latitude,pos.coords.longitude);
@@ -644,9 +703,7 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
 
 
  var recoverPassword = function(email){
-   $ionicLoading.show({
-      template: "Please wait..."
-    });
+   loading("Please wait...");
    var request = $http({
       method: "POST",
       url: "http://"+$scope.IP+"/auth/recover.php",
@@ -666,18 +723,8 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
         showToast("Email address is not registered","long","center");
       }
       else if(data == "1"){
-         // sendVerificationCode(d)
-          //var email = data.split("`")[0];
-          //var pass = data.split("`")[1];
           generateNewPassword();
           sendAndUpdate(email, $rootScope.newPassword);
-          //alert("Sssssss");
-          // alert(email +" "+$rootScope.newPassword+ " "+data.split("`")[2]);
-          // sendVerificationCode(email, newPassword);
-          // alert("Password recovered");
-      //    showToast("Password has been recovered","long","center")
-      }else{
-        showToast("Server problems","long","center");
       }
       
   });
@@ -793,7 +840,7 @@ uwatch.controller('MasterController', function($scope,$rootScope,$http,$ionicPop
      });
    };
   
-  var deletAccount = function(){
+  var deleteAccount = function(){
         var request = $http({
               method: "POST",
               url: "http://"+$scope.IP+"/auth/delete.php",

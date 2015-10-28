@@ -6,6 +6,7 @@
             </p>
         </div> 
         <div class="list card padding">
+            <p>Enter OTP code sent to your email.</p>
             <label class="item item-input">
                 <span class="input-label">OTP:</span>
                 <input type="text" ng-model="otp" placeholder="Enter verification code">
@@ -13,11 +14,10 @@
         </div>
         <div class="list" style="text-align:center">
             <button class="button icon-left ion-checkmark button-positive" ng-click="verifyCode(otp)">Verify code</button>
-          <button class="button button-outline icon-right ion-refresh " ng-click="resendCode()">Resend code</button>
-<br/><br>
-          <button class="button button-small button-outline icon-left ion-person-add" ng-click="signupPage()">Create new account</button>
-
-          <button class="button button-small button-outline icon-left ion-person" ng-click="loginPage()">Already have account</button>
+            <button class="button button-outline icon-right ion-refresh " ng-click="resendCode()">Resend code</button>
+            <br/><br>
+            <button class="button button-small button-outline icon-left ion-person-add" ng-click="signupPage()">Create new account</button>
+            <button class="button button-small button-outline icon-left ion-person" ng-click="loginPage()">Already have account</button>
         </div>
     </ion-content>
 </ion-view>

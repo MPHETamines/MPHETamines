@@ -47,6 +47,10 @@
                         {
                             "xml": "<feature name=\"Capture\"><param name=\"android-package\" value=\"org.apache.cordova.mediacapture.Capture\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"ProgressIndicator\"><param name=\"android-package\" value=\"org.apache.cordova.progressindicator.ProgressIndicator\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -121,6 +125,9 @@
             "PACKAGE_NAME": "com.ionicframework.uwatch892351"
         },
         "org.apache.cordova.media-capture": {
+            "PACKAGE_NAME": "com.ionicframework.uwatch892351"
+        },
+        "org.pbernasconi.progressindicator": {
             "PACKAGE_NAME": "com.ionicframework.uwatch892351"
         }
     },

@@ -12,11 +12,19 @@
 	border-color: #0A1D40;
 	border-radius: 5px;
 }
+.button.button-assertive{
+	border-radius: 5px;
+}
 .button.button-small.button-outline{
 	color: #0A1D40;
 }
 .item-input{
 	border-radius: 5px;
+}
+.item-positive{
+	background-color: #0A1D40 !important;
+	border-color: #0A1D40;
+		border-radius: 5px;
 }
 .col{
 	text-align: center;
@@ -48,5 +56,13 @@
 }
 
 .list.logo img{
-	width:60%
+	width:54%
+}
+
+.spinner svg{
+	width:36px;
+	height: 36px;
+	stroke: #fff;
+	fill: #fff;
+
 }
