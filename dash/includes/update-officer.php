@@ -14,6 +14,7 @@ session_start();
 		$officer_password = $row['password'];
 		$officer_fullname = $row['fullname'];
 		$officer_role = $row['role'];
+		$date = $row['date'];
 		
 	}
 
@@ -28,6 +29,9 @@ echo '<tr>
         <td>'.$officer_fullname.'</td>
         <td>'.$officer_username.'</td>
         <td>'.$officer_role.'</td>
+        <td>'.$date.'</td>
+	    <td class="edit" id="'.$officer_id.'" > 
+        <a id="'.$officer_id.'" class="edit-button" width="10px" href="" >Edit</a></td> 
         <td id="'.$officer_id.'" >
          <img id="'.$officer_id.'" class="delete-button" width="10px" src="../images/close.svg" alt="delete"/></td>
     <tr>';

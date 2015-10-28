@@ -1,8 +1,9 @@
+
 search_files();
 insert_officer(); // Call the insert_officer function
 delete_officer(); // Call the delete_officer function
 view_users();
-//edit_officer();
+edit_officer();
 
 function view_users() {
 	$('button.view_users').click(function(){
@@ -88,30 +89,33 @@ function delete_officer() {
 var id;
 var ele;
 function edit_officer() {
-	$('button.edit-button').click(function(){
+	$('li.updateForm').hide();
+	$('a.edit-button').click(function(){
 		id = $(this).attr('id');
 		//color($(this));
 		ele = $(this);
 		//$('.hey').html(id);
-		$('form.update').show();
-		$('button.showAddForm').click(function(){
-			$('form.update').hide();
-			$('button.edit-button').show();
+		$('li.registerForm').hide();
+		$('li.updateForm').show();
+		$('button.update-officer').click(function(){
+			var pass1 = $('li.updateForm input[name=update-pass]').val();
+			var pass2 = $('li.updateForm input[name=con-update-pass]').val();
+			if(pass1 == '' || pass1 == undefined || pass2 == '' || pass2 == undefined){
+				alert("Please enter password");
+			}
+			else if(pass1 != pass2 ){
+				alert("Passwords do not match");
+			}else{
+				$.post('../includes/update-officer.php', { password: pass1, officer_id: id}, function( data ) {
+					$('li.updateForm input[name=con-update-pass]').val('');
+					$('li.updateForm input[name=update-pass]').val('');
+				});
+			}
 		});
-	});
-	$('button.update-submit').click(function(){
-		var pass1= $('.update input[name=pass1]').val();
-		var pass2= $('.update input[name=pass2]').val();
-		if(pass1 != '' && pass2 != '' && pass1 === pass2){
-			$.post('../includes/update-officer.php', { password: pass1, officer_id: id}, function( data ) {
-				ele.parent().fadeOut("fast", function() { $(this).remove(); });
-				cleanFields();
-				$(data).appendTo('.officerList ul').hide().fadeIn();
-				$('form.update').hide();
-				delete_officer();
-			});
-		}
-		return false; // Ensure that the form does not submit twice					
+		$('button.cancel').click(function(){
+			$('li.registerForm').show();
+			$('li.updateForm').hide();
+		});
 	});
 }
 

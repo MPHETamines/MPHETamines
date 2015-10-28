@@ -27,8 +27,8 @@ require_once('../includes/connect.php');
                                     <a href='../../auth/uploads/".$row['link']."' data-lightbox='images'>
                                         <img src='../../auth/uploads/".$row['link']."'  width='200px' height='140px' alt='pde image' />
                                     </a>
-                                    <a class='btn btn-primary' href='../../auth/uploads/".$row['link']."' download>Download</a>
                                 </td>";
+                                    // <a class='btn btn-primary' href='../../auth/uploads/".$row['link']."' download>Download</a>
 
                                 if($i%2==0) 
                                 echo "</tr><tr class='imageTr'>";

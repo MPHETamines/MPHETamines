@@ -127,7 +127,7 @@ if(!isset($_SESSION['fullname']) || !isset($_SESSION['role']) || !isset($_SESSIO
                             <a href="officers.php"><i class="fa fa-user fa-fw"></i> Law officials</a>
                         </li>
 
-                        <li> <!-- add officer form-->
+                        <li class="registerForm"> <!-- add officer form-->
                             <div class="form-group well">
 
                                 <form class="insertOfficer" autocomplete="off">
@@ -144,6 +144,19 @@ if(!isset($_SESSION['fullname']) || !isset($_SESSION['role']) || !isset($_SESSIO
                                 </form>
                                 <br/>
                                 <button type="button" class="form-control insert_officer btn btn-primary" >Add official</button>
+                            </div>
+                        </li>
+
+                        <li class="updateForm"> <!-- add officer form-->
+                            <div class="form-group well">
+
+                                <form class="insertOfficer" autocomplete="off">
+                                    <input class="form-control" type="password" name="update-pass" placeholder="New password..." />
+                                    <input class="form-control" type="password" name="con-update-pass" placeholder="confirm password..." />
+                                </form>
+                                <br/>
+                                <button type="button" class="form-control update_officer btn btn-primary" >Update password</button>
+                                <button type="button" class="form-control cancel btn btn-primary" >Add official</button>
                             </div>
                         </li>
        <?php } ?>
