@@ -1,0 +1,42 @@
+<ion-view>
+    <ion-content class="padding">
+        <div class="list logo">
+            <p>
+                <img src="img/icons/logo.png">
+            </p>
+        </div> 
+   
+        <div class="list">
+
+            <div class="list list-inset padding padding-bottom" ng-style="passwordStrength">{{strength}}</div> 
+            
+            <label class="item item-input">
+                <span class="input-label">Fullname:</span>
+                <input type="text" ng-model="fullname" placeholder="John Doe">
+            </label>
+
+            <label class="item item-input">
+                <span class="input-label">Email:</span>
+                <input type="email" ng-model="email"  placeholder="johndoe@mail.com">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Password:</span>
+                <input type="password" ng-model="regpassword" ng-change="analyze(regpassword)"> 
+            </label>
+            <label class="item item-input">
+                <span class="input-label">Confirm password:</span>
+                <input type="password" ng-model="regcpassword" ng-change="analyzeMatch(regpassword,regcpassword)">
+            </label>
+            <button class="button button-block button-dark activated"  ng-click="getUserData(fullname,email,regpassword,regcpassword)">
+                Signup
+            </button>
+        </div>
+        <div class="list" style="text-align:center">
+            <p class="terms">Terms and conditions apply</p>
+            <button ng-click="loginPage()" class="button button-small button-outline icon-left ion-person">
+                Already have account
+            </button>
+        </div>
+
+    </ion-content>
+</ion-view>

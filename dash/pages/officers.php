@@ -21,8 +21,9 @@ require('../includes/header.php')
                                                 <th>Fullname</th>
                                                 <th>Username</th>
                                                 <th>Role</th>
+                                                <th>Date created</th>
                                                 <?php if( isset($_SESSION['role']) && $_SESSION['role']=='admin'){
-                                                    echo '<th class="delete">Delete</th>';
+                                                    echo '<th class="edit">Edit password</th><th class="delete">Delete</th>';
                                                 }?>
                                             </tr>
                                         </thead>
@@ -38,15 +39,20 @@ require('../includes/header.php')
                                             $officer_username = $row['username'];
                                             //$officer_password = $row['password'];
                                             $officer_fullname = $row['fullname'];
-                                            $officer_role = $row['role'];      
+                                            $officer_role = $row['role'];
+                                            $date = $row['date'];      
 
                                             if( isset($_SESSION['role']) && $_SESSION['role']=='admin'){
                                               echo '<tr>
                                                         <td>'.$officer_fullname.'</td>
                                                         <td>'.$officer_username.'</td>
                                                         <td>'.$officer_role.'</td>
+                                                        <td>'.$date.'</td>
+                                                        <td class="edit" id="'.$officer_id.'" > 
+                                                        <a id="'.$officer_id.'" class="edit-button" width="10px" href="" >Edit</a></td> 
                                                         <td class="delete" id="'.$officer_id.'" > 
                                                         <img id="'.$officer_id.'" class="delete-button" width="10px" src="../images/close.svg" alt="delete"/></td> 
+                                                        
                                                     <tr>'; 
 
                                             }else{
@@ -54,6 +60,7 @@ require('../includes/header.php')
                                                         <td>'.$officer_fullname.'</td>
                                                         <td>'.$officer_username.'</td>
                                                         <td>'.$officer_role.'</td>
+                                                        <td>'.$date.'</td>
                                                     <tr>'; 
 
                                             }  

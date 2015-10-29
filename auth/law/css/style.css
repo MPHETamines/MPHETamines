@@ -1,0 +1,162 @@
+table{
+  
+    background-color: #fff;
+}
+tr{
+    float: left;
+    padding: 0 0 10px 50px;
+    margin: 0;
+}
+
+form {
+	background-color: lightblue;
+	padding: 40px;
+}
+form label{
+	font-size: 14px;
+}
+form input{
+	width: 300px;
+}
+
+.active{
+	color: #fff !important; 
+}
+
+/*Bootstraping form*/
+#custom-search-input{
+    padding: 3px;
+    border: solid 1px #E4E4E4;
+    border-radius: 6px;
+    background-color: #fff;
+    width: 1000px;
+}
+
+#custom-search-input input{
+    border: 0;
+    box-shadow: none;
+}
+
+#custom-search-input button{
+    margin: 2px 0 0 0;
+    background: none;
+    box-shadow: none;
+    border: 0;
+    color: #666666;
+    padding: 0 8px 0 10px;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input button:hover{
+    border: 0;
+    box-shadow: none;
+    border-left: solid 1px #ccc;
+}
+
+#custom-search-input .glyphicon-search{
+    font-size: 23px;
+}
+/* ============ register form ======================*/
+@import "bourbon";
+
+body {
+    background: #F5F5F5 !important;    
+}
+
+.wrapper {  
+    margin-top: 80px;
+    margin-bottom: 80px;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.form-signin {
+  max-width: 380px;
+  padding: 15px 35px 45px;
+  margin: 0 auto;
+  background-color: #fff;
+  border: 1px solid rgba(0,0,0,0.1);  
+
+  .form-signin-heading, .checkbox {
+      margin-bottom: 30px;
+    }
+
+    .checkbox {
+      font-weight: normal;
+    }
+
+    .form-control {
+
+      position: relative;
+      font-size: 16px;
+      height: auto;
+      padding: 10px;
+
+        @include box-sizing(border-box);
+
+        &:focus {
+          z-index: 2;
+        }
+
+
+
+
+    }
+
+    input[type="text"] {
+      margin-bottom: -1px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    input[type="password"] {
+      margin-bottom: 20px;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+}
+
+.form-control{
+    margin: 20px 0 20px 0;
+}
+
+.nav li.name{
+    float: right;
+}
+.nav li.name a{
+    color:lightblue;
+}
+
+.nav li.name a:hover{
+    color:lightblue;
+}
+.nav li.logout a:hover{
+    color:#fff;
+}
+.navbar-nav{
+    width: 80%;
+}
+
+.error p {
+    color:red;
+    font-size: 1.1em;
+}
+
+.success p {
+    color:green;
+    font-size: 1.1em;
+}
+
+.theader th{
+    font-weight: bold;
+    padding: 20px;
+    border: 1px solid #ccc;
+}
+tr th{
+    width:200px;
+    font-weight: normal;
+    padding: 5px;
+    border-left: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}

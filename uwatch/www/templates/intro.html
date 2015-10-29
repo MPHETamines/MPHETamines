@@ -1,0 +1,56 @@
+<ion-view >
+  <ion-nav-buttons side="left">
+    <button class="button button-positive button-clear no-animation"
+            ng-click="startApp()" ng-show="!slideIndex">
+      Skip Intro
+    </button>
+    <button class="button button-positive button-clear no-animation"
+            ng-click="previous()" ng-show="slideIndex > 0">
+      Previous Slide
+    </button>
+  </ion-nav-buttons>
+  <ion-nav-buttons side="right"> 
+    <button class="button button-positive button-clear no-animation"
+            ng-click="next()" ng-show="slideIndex != 3">
+      Next
+    </button>
+    <button class="button button-positive button-clear no-animation"
+            ng-click="startApp()" ng-show="slideIndex == 3">
+          Got it
+    </button>
+  </ion-nav-buttons>
+  <ion-slide-box on-slide-changed="slideChanged(index)">
+    <ion-slide>
+      <h3>Welcome to uWatch App</h3>
+      <div class="logo">
+        <img src="img/uwatch.png">
+      </div>
+      <p>
+        This is an evidence capturing app <br/>to fight crime and corruption.
+      </p>
+      <p></p>
+      <p>
+        Do not worry, your identity will be protected.
+      </p>
+    </ion-slide>
+    
+    <ion-slide id="spot">
+      <h3>Using uWatch</h3>
+      <span class="icon ion-radio-waves"></span>
+      <p class="point">1. Spot a crime scene</p>
+    </ion-slide>
+
+     <ion-slide id="capture">
+      <h3>Using uWatch</h3>
+      <span class="icon ion-android-phone-landscape"></span>
+      <p class="point">2. Start capturing</p>
+    </ion-slide>
+
+     <ion-slide id="upload">
+      <h3>Using uWatch</h3>
+      <span class="icon ion-ios-cloud-upload-outline"></span>
+      <p class="point">3. Click upload button</p>
+    </ion-slide>
+  
+  </ion-slide-box>
+</ion-view>
